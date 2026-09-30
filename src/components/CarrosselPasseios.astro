@@ -1,0 +1,571 @@
+---
+// Dados dos INGRESSOS OFICIAIS (parceiros)
+const passeios = [
+  {
+    id: 1,
+    titulo: "ParksNet Passaporte",
+    subtitulo: "Todos os parques da Serra Gaúcha em um só lugar",
+    categoria: "PASSEIOS E PARQUES",
+    imagem: "https://myjcwvyyspwituevmdeu.supabase.co/storage/v1/render/image/public/product-images/products/1788357118532-q366rrkc9m.webp?width=800&resize=contain&quality=80",
+    avaliacao: 4.9,
+    totalAvaliacoes: 1280,
+    slug: "parksnet",
+    linkOficial: "https://parksnet.com.br/passeios-e-ingressos-serra-gaucha-com-a-parksnet?bookingAgency=5022",
+    duracao: 480,
+    vendas: 2100,
+    tags: [
+      "Snowland, NBA Park, Skyglass",
+      "Até 10x sem juros",
+      "Cancelamento garantido"
+    ]
+  },
+  {
+    id: 2,
+    titulo: "Kongo Pizzaria",
+    subtitulo: "Uma experiência animal em meio à selva",
+    categoria: "PIZZARIA TEMÁTICA",
+    imagem: "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/Pga3b6vi0z0NM39FINKKOZ71F8gDhDyoGpqDNYzE.jpg",
+    avaliacao: 4.8,
+    totalAvaliacoes: 630,
+    slug: "kongo-pizzaria",
+    linkOficial: "https://vendas.kongogramado.com.br?ac=3QS01LBV0I",
+    duracao: 180,
+    vendas: 1890,
+    tags: [
+      "Selva temática em Gramado",
+      "Rodízio de pizzas + show",
+      "Anfitriões Maik, Ary e Aquila"
+    ]
+  },
+  {
+    id: 3,
+    titulo: "Parque da Mônica",
+    subtitulo: "A magia da Vila da Mônica na Serra Gaúcha",
+    categoria: "PARQUE TEMÁTICO",
+    imagem: "https://d335luupugsy2.cloudfront.net/cms/files/434197/1752601582/$bqovgdvnd0q",
+    avaliacao: 4.8,
+    totalAvaliacoes: 1500,
+    slug: "parque-da-monica",
+    linkOficial: "https://ingressos.viladamonica.com.br/carrinho/ativarCupom?nrCupom=VANDERLEIFAUSTINO&byUrl=true",
+    duracao: 480,
+    vendas: 2500,
+    tags: [
+      "Parque Vila da Mônica Gramado",
+      "Mais de 20 atrações",
+      "Turma da Mônica ao vivo"
+    ]
+  },
+  {
+    id: 4,
+    titulo: "Era do Fogo Fondue Temático",
+    subtitulo: "A experiência mais cavernosa de Gramado",
+    categoria: "FONDUE TEMÁTICO",
+    imagem: "https://assets.planne.com.br/apps/KXBS57CN5A8/images/_/v3wu8Q6aRqLU902MsUEdHkIpzMtHuN2NecOce9wx.png",
+    avaliacao: 4.8,
+    totalAvaliacoes: 320,
+    slug: "era-do-fogo",
+    linkOficial: "https://ingressos.eradofogo.com.br?ac=",
+    duracao: 150,
+    vendas: 480,
+    tags: [
+      "Fondue na caverna pré-histórica",
+      "Dos criadores da Hector Pizzaria",
+      "Gruga e os cavernosos"
+    ]
+  },
+  {
+    id: 5,
+    titulo: "Ferrovia Secreta Hector",
+    subtitulo: "Sequência de comida americana no trem mágico",
+    categoria: "GASTRONOMIA TEMÁTICA",
+    imagem: "/images/ferrovia hector.webp",
+    avaliacao: 4.7,
+    totalAvaliacoes: 245,
+    slug: "ferrovia-secreta",
+    linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=0",
+    duracao: 150,
+    vendas: 310,
+    tags: [
+      "Trem mágico do Hector",
+      "Comida americana farta",
+      "Mágica com Edgar Faísca"
+    ]
+  },
+  {
+    id: 6,
+    titulo: "Hector Pizzaria",
+    subtitulo: "Rodízio de Discos de Sabor na Escola de Magia Ônyra",
+    categoria: "RODÍZIO DE PIZZA",
+    imagem: "https://assets.planne.com.br/apps/56TSFCYPGR3/images/_/6XcTkjcRN2I8ApRkvYfnN7kGtCCPCd7fifjyAMpH.jpg",
+    avaliacao: 4.9,
+    totalAvaliacoes: 512,
+    slug: "hector-pizzaria",
+    linkOficial: "https://ingressos.hectordragao.com.br?ac=",
+    duracao: 140,
+    vendas: 720,
+    tags: [
+      "Escola de Magia Ônyra",
+      "Mais de 80 sabores de pizza",
+      "Pocket shows com personagens"
+    ]
+  },
+  {
+    id: 7,
+    titulo: "Gatzz Fondue & Show",
+    subtitulo: "Dinner show de Broadway na Serra Gaúcha",
+    categoria: "DINNER SHOW",
+    imagem: "https://fondue.gatzz.com.br/ambiente/gatzz1.jpg",
+    avaliacao: 4.8,
+    totalAvaliacoes: 380,
+    slug: "gatzz",
+    linkOficial: "https://www.gatzz.com.br?ac=",
+    duracao: 180,
+    vendas: 410,
+    tags: [
+      "Fondue premium 3 etapas",
+      "Show com 22 artistas",
+      "Classificação 18+"
+    ]
+  }
+];
+---
+
+<section class="relative pt-0 lg:pt-0 pb-12 lg:pb-20">
+  <!-- Cabeçalho da seção -->
+  <div class="text-center mb-6 relative z-20">
+    <div class="flex items-center justify-center mb-6">
+      <div class="h-px bg-gradient-to-r from-transparent via-primary-400 to-transparent flex-1 max-w-xs"></div>
+      <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mx-8">
+        Ingressos e Atrações em <span class="text-primary-600 dark:text-primary-400">Gramado e Canela</span>
+      </h2>
+      <div class="h-px bg-gradient-to-r from-transparent via-primary-400 to-transparent flex-1 max-w-xs"></div>
+    </div>
+  </div>
+
+  <!-- Container do carrossel -->
+  <div class="relative z-20">
+    <div class="overflow-hidden">
+      <div id="carousel-container" class="flex transition-transform duration-500 ease-in-out pb-4 will-change-transform">
+        {passeios.map((passeio) => (
+          <div class="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3" data-id={passeio.id}>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group h-full flex flex-col">
+              <div class="relative h-52 lg:h-56 overflow-hidden">
+                <img 
+                  src={passeio.imagem} 
+                  alt={passeio.titulo}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div class="absolute top-3 left-3">
+                  <span class="bg-primary-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full">
+                    {passeio.categoria}
+                  </span>
+                </div>
+                <div class="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow">
+                  ⭐ {passeio.avaliacao}
+                </div>
+              </div>
+              <div class="p-4 lg:p-5 flex flex-col flex-1 gap-3">
+                <h3 class="font-bold text-2xl lg:text-xl text-gray-900 dark:text-white leading-tight line-clamp-2">
+                  {passeio.titulo}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 text-lg lg:text-base leading-relaxed line-clamp-2 flex-1">
+                  {passeio.subtitulo}
+                </p>
+                <div class="flex flex-wrap gap-2 mt-2 mb-2">
+                  {passeio.tags.slice(0, 2).map(tag => (
+                    <span class="px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium line-clamp-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="flex flex-col gap-2 mt-auto">
+                  <a
+                    href={passeio.linkOficial}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
+                  >
+                    <span class="flex items-center justify-center">
+                      RESERVE AGORA
+                    </span>
+                  </a>
+                  <a
+                    href={`/${passeio.slug}`}
+                    class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
+                  >
+                    <span class="flex items-center justify-center">
+                      SAIBA MAIS
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <button 
+      id="prev-btn"
+      class="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-800 shadow-lg rounded-full p-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10"
+      aria-label="Anterior"
+      type="button"
+    >
+      <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <button 
+      id="next-btn"
+      class="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-800 shadow-lg rounded-full p-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10"
+      aria-label="Próximo"
+      type="button"
+    >
+      <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Indicadores -->
+  <div id="indicators" class="flex justify-center mt-2 pb-6 gap-2 relative z-20">
+    <!-- Indicadores serão gerados dinamicamente pelo JavaScript -->
+  </div>
+
+  <!-- Divisor Boleado Suave -->
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+    <svg 
+      viewBox="0 0 1200 120" 
+      preserveAspectRatio="none" 
+      class="relative block w-[calc(100%+1.3px)] h-[40px] lg:h-[60px]"
+    >
+      <path d="M0,0 C300,120 900,120 1200,0 L1200,120 L0,120 Z" class="fill-gray-50 dark:fill-gray-900"></path>
+    </svg>
+  </div>
+</section>
+
+<script>
+  // Dados dos INGRESSOS OFICIAIS (busca JS dinamica)
+  const passeiosData = [
+    {
+      id: 1,
+      titulo: "ParksNet Passaporte",
+      subtitulo: "Todos os parques da Serra Gaúcha em um só lugar",
+      categoria: "PASSEIOS E PARQUES",
+      imagem: "https://myjcwvyyspwituevmdeu.supabase.co/storage/v1/render/image/public/product-images/products/1788357118532-q366rrkc9m.webp?width=800&resize=contain&quality=80",
+      avaliacao: 4.9,
+      totalAvaliacoes: 1280,
+      slug: "parksnet",
+      linkOficial: "https://parksnet.com.br/passeios-e-ingressos-serra-gaucha-com-a-parksnet?bookingAgency=5022",
+      duracao: 480,
+      vendas: 2100,
+      tags: ["Snowland, NBA Park, Skyglass", "Até 10x sem juros", "Cancelamento garantido"]
+    },
+    {
+      id: 2,
+      titulo: "Kongo Pizzaria",
+      subtitulo: "Uma experiência animal em meio à selva",
+      categoria: "PIZZARIA TEMÁTICA",
+      imagem: "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/Pga3b6vi0z0NM39FINKKOZ71F8gDhDyoGpqDNYzE.jpg",
+      avaliacao: 4.8,
+      totalAvaliacoes: 630,
+      slug: "kongo-pizzaria",
+      linkOficial: "https://vendas.kongogramado.com.br?ac=3QS01LBV0I",
+      duracao: 180,
+      vendas: 1890,
+      tags: ["Selva temática em Gramado", "Rodízio de pizzas + show", "Anfitriões Maik, Ary e Aquila"]
+    },
+    {
+      id: 3,
+      titulo: "Parque da Mônica",
+      subtitulo: "A magia da Vila da Mônica na Serra Gaúcha",
+      categoria: "PARQUE TEMÁTICO",
+      imagem: "https://d335luupugsy2.cloudfront.net/cms/files/434197/1752601582/$bqovgdvnd0q",
+      avaliacao: 4.8,
+      totalAvaliacoes: 1500,
+      slug: "parque-da-monica",
+      linkOficial: "https://ingressos.viladamonica.com.br/carrinho/ativarCupom?nrCupom=VANDERLEIFAUSTINO&byUrl=true",
+      duracao: 480,
+      vendas: 2500,
+      tags: ["Parque Vila da Mônica Gramado", "Mais de 20 atrações", "Turma da Mônica ao vivo"]
+    },
+    {
+      id: 4,
+      titulo: "Era do Fogo Fondue Temático",
+      subtitulo: "A experiência mais cavernosa de Gramado",
+      categoria: "FONDUE TEMÁTICO",
+      imagem: "https://assets.planne.com.br/apps/KXBS57CN5A8/images/_/v3wu8Q6aRqLU902MsUEdHkIpzMtHuN2NecOce9wx.png",
+      avaliacao: 4.8,
+      totalAvaliacoes: 320,
+      slug: "era-do-fogo",
+      linkOficial: "https://ingressos.eradofogo.com.br?ac=",
+      duracao: 150,
+      vendas: 480,
+      tags: ["Fondue na caverna pré-histórica", "Dos criadores da Hector Pizzaria", "Gruga e os cavernosos"]
+    },
+    {
+      id: 5,
+      titulo: "Ferrovia Secreta Hector",
+      subtitulo: "Sequência de comida americana no trem mágico",
+      categoria: "GASTRONOMIA TEMÁTICA",
+      imagem: "/images/ferrovia hector.webp",
+      avaliacao: 4.7,
+      totalAvaliacoes: 245,
+      slug: "ferrovia-secreta",
+      linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=0",
+      duracao: 150,
+      vendas: 310,
+      tags: ["Trem mágico do Hector", "Comida americana farta", "Mágica com Edgar Faísca"]
+    },
+    {
+      id: 6,
+      titulo: "Hector Pizzaria",
+      subtitulo: "Rodízio de Discos de Sabor na Escola de Magia Ônyra",
+      categoria: "RODÍZIO DE PIZZA",
+      imagem: "https://assets.planne.com.br/apps/56TSFCYPGR3/images/_/6XcTkjcRN2I8ApRkvYfnN7kGtCCPCd7fifjyAMpH.jpg",
+      avaliacao: 4.9,
+      totalAvaliacoes: 512,
+      slug: "hector-pizzaria",
+      linkOficial: "https://ingressos.hectordragao.com.br?ac=",
+      duracao: 140,
+      vendas: 720,
+      tags: ["Escola de Magia Ônyra", "Mais de 80 sabores de pizza", "Pocket shows com personagens"]
+    },
+    {
+      id: 7,
+      titulo: "Gatzz Fondue & Show",
+      subtitulo: "Dinner show de Broadway na Serra Gaúcha",
+      categoria: "DINNER SHOW",
+      imagem: "https://fondue.gatzz.com.br/ambiente/gatzz1.jpg",
+      avaliacao: 4.8,
+      totalAvaliacoes: 380,
+      slug: "gatzz",
+      linkOficial: "https://www.gatzz.com.br?ac=",
+      duracao: 180,
+      vendas: 410,
+      tags: ["Fondue premium 3 etapas", "Show com 22 artistas", "Classificação 18+"]
+    }
+  ];
+
+  // Função para criar HTML do card (dinamico / busca)
+  function createCardHTML(passeio) {
+    const tags = (passeio.tags || []).slice(0, 2).map(t =>
+      `<span class="px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium line-clamp-1">\${t}</span>`
+    ).join('');
+    return `
+      <div class="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3" data-id="\${passeio.id}">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group h-full flex flex-col">
+          <div class="relative h-52 lg:h-56 overflow-hidden">
+            <img 
+              src="\${passeio.imagem}" 
+              alt="\${passeio.titulo}"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div class="absolute top-3 left-3">
+              <span class="bg-primary-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full">
+                \${passeio.categoria}
+              </span>
+            </div>
+            <div class="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow">
+              ⭐ \${passeio.avaliacao}
+            </div>
+          </div>
+          <div class="p-4 lg:p-5 flex flex-col flex-1 gap-3">
+            <h3 class="font-bold text-2xl lg:text-xl text-gray-900 dark:text-white leading-tight line-clamp-2">
+              \${passeio.titulo}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 text-lg lg:text-base leading-relaxed line-clamp-2 flex-1">
+              \${passeio.subtitulo}
+            </p>
+            <div class="flex flex-wrap gap-2 mt-2 mb-2">
+              \${tags}
+            </div>
+            <div class="flex flex-col gap-2 mt-auto">
+              <a
+                href="\${passeio.linkOficial || '/'}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
+              >
+                <span class="flex items-center justify-center">
+                  RESERVE AGORA
+                </span>
+              </a>
+              <a
+                href="/\${passeio.slug}"
+                class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
+              >
+                <span class="flex items-center justify-center">
+                  SAIBA MAIS
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function initCarouselIngressos() {
+    let currentSlide = 0;
+    const container = document.getElementById('carousel-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const indicatorsContainer = document.getElementById('indicators');
+
+    if (!container || !indicatorsContainer) return;
+
+    function getSlidesPerView() {
+      if (window.innerWidth >= 1280) return 4;
+      if (window.innerWidth >= 1024) return 3;
+      if (window.innerWidth >= 640) return 2;
+      return 1;
+    }
+    
+    function getTotalSlides() {
+      const totalItems = container.children.length;
+      const slidesPerView = getSlidesPerView();
+      return Math.max(1, totalItems - slidesPerView + 1);
+    }
+
+    function updateIndicators() {
+      const indicators = indicatorsContainer.children;
+      for (let i = 0; i < indicators.length; i++) {
+        indicators[i].className = `w-2 h-2 rounded-full transition-colors ${
+          i === currentSlide ? 'bg-primary-600' : 'bg-gray-300'
+        }`;
+      }
+    }
+    
+    function updateCarousel() {
+      const firstItem = container.children[0];
+      const itemWidth = firstItem ? firstItem.getBoundingClientRect().width : 0;
+      container.style.transform = `translateX(-${currentSlide * itemWidth}px)`;
+
+      const totalSlides = getTotalSlides();
+      if (prevBtn) prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+      if (nextBtn) nextBtn.style.opacity = currentSlide >= totalSlides - 1 ? '0.5' : '1';
+
+      updateIndicators();
+    }
+    
+    function createIndicators() {
+      const totalSlides = getTotalSlides();
+      indicatorsContainer.innerHTML = '';
+      
+      for (let i = 0; i < totalSlides; i++) {
+        const indicator = document.createElement('button');
+        indicator.className = `w-2 h-2 rounded-full transition-colors ${
+          i === currentSlide ? 'bg-primary-600' : 'bg-gray-300'
+        }`;
+        indicator.addEventListener('click', () => {
+          currentSlide = i;
+          updateCarousel();
+        });
+        indicatorsContainer.appendChild(indicator);
+      }
+    }
+    
+    function initCarousel() {
+      createIndicators();
+      updateCarousel();
+    }
+
+    let autoPlayInterval;
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(() => {
+        const totalSlides = getTotalSlides();
+        currentSlide = currentSlide < totalSlides - 1 ? currentSlide + 1 : 0;
+        updateCarousel();
+      }, 8000);
+    }
+    
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateCarousel();
+      }
+    });
+    
+    nextBtn?.addEventListener('click', () => {
+      const totalSlides = getTotalSlides();
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateCarousel();
+      }
+    });
+
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let startTime = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isDragging = true;
+      startTime = Date.now();
+      stopAutoPlay();
+    }, { passive: true });
+    
+    container.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = Math.abs(currentX - startX);
+      const diffY = Math.abs(currentY - startY);
+      
+      if (diffX > diffY) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    
+    container.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      
+      const endX = e.changedTouches[0].clientX;
+      const diffX = startX - endX;
+      const diffTime = Date.now() - startTime;
+      
+      isDragging = false;
+      
+      if (Math.abs(diffX) > 50 && diffTime < 500) {
+        const totalSlides = getTotalSlides();
+        if (diffX > 0 && currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateCarousel();
+        } else if (diffX < 0 && currentSlide > 0) {
+          currentSlide--;
+          updateCarousel();
+        }
+      }
+      
+      setTimeout(() => {
+        startAutoPlay();
+      }, 1000);
+    }, { passive: true });
+    
+    window.addEventListener('resize', () => {
+      currentSlide = 0;
+      initCarousel();
+    });
+
+    initCarousel();
+    startAutoPlay();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarouselIngressos);
+  } else {
+    initCarouselIngressos();
+  }
+</script>

@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StarRating from '../components/StarRating.astro';
+
+const passeio = {
+  titulo: "Kongo Pizzaria",
+  subtitulo: "Uma experiência animal em meio à selva!",
+  categoria: "INGRESSOS E ATRAÇÕES",
+  avaliacao: 4.8,
+  totalAvaliacoes: 630,
+  linkOficial: "https://vendas.kongogramado.com.br?ac=3QS01LBV0I",
+  descricao: "A Kongo Pizzaria é uma pizzaria temática imersiva em Gramado onde você vive uma experiência animal no coração da selva! Cenográfica com plantas, árvores, animais, efeitos de iluminação (amanhecer, pôr do sol, trovoadas) e personagens que interagem com todos os convidados à mesa: o gorila Maik, o camaleão Ary, a rainha Aquila e toda a equipe de anfitriões. Rodízio de pizzas premium, com shows musicais temáticos a noite toda: Aventura na Selva, Alguém viu o Maik? e Sons da Natureza.",
+  inclusos: [
+    "Rodízio completo de pizzas salgadas e doces",
+    "Shows temáticos ao vivo durante a noite",
+    "Interação com os personagens Maik, Ary e a Rainha Aquila",
+    "Decoração imersiva de selva com efeitos de iluminação",
+    "Experiência temática: amanhecer, pôr do sol e trovoadas no ambiente",
+    "Atendimento dos anfitriões caracterizados",
+    "Opção de reserva de mesa (horários 17:30 ou 22:00) para evitar filas"
+  ],
+  naoInclusos: [
+    "Bebidas (alcoólicas e não alcoólicas) pagas à parte",
+    "Sobremesas extras fora do rodízio",
+    "Fotos profissionais (se contratadas no local)",
+    "Serviços de manobrista / estacionamento"
+  ],
+  duracao: "2h30 a 3h de experiência completa",
+  horarios: ["Funcionamento todos os dias das 17:30 às 22:45", "Reservas de mesa: 17:30 ou 22:00", "Shows: Aventura na Selva (seg/sex), Alguém viu o Maik? (ter/qui), Sons da Natureza (semana toda)"],
+  endereco: "Av. Hortênsias, 5683, Carniel — Gramado/RS, Brasil",
+  galeria: [
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/Pga3b6vi0z0NM39FINKKOZ71F8gDhDyoGpqDNYzE.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/thumbnail/zipElzbvbTUd27l1D1ZG7v0M5yEIxVgxn7zpGZUP.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/thumbnail/k8aB6WL5eTpUTtDurFhTvxippKxHuPyRew23y06z.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/thumbnail/OLboEsybwmZ1z66H1nPDnx7meoDYcTDJnItrrtXR.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/thumbnail/XVmqyC2PLSiXJrAsgtTHjPbhyPo9pv3uaIzb7kLb.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/mXmdAkiWdtMFqkiEZbQldd332i19zBs4ESNixrqS.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/4P8gscSB1XeGvMG8vTGhjXcXHreEhYnDtRlDBqwR.jpg",
+    "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/lAVWu0Yrc5RoptAQioUEED3KxXDkIhpevNCB0HrJ.jpg"
+  ],
+  tags: [
+    "Selva temática em Gramado",
+    "Rodízio de pizzas + show",
+    "Personagens Maik, Ary e Rainha Aquila",
+    "Shows: Aventura na Selva, Alguém viu o Maik, Sons da Natureza",
+    "Experiência temática imersiva na Serra Gaúcha"
+  ],
+  valores: [],
+};
+
+const whatsappMessage = `Olá! Gostaria de mais informações sobre a ${passeio.titulo} - ${passeio.subtitulo}. Preenchido através do site Passeios Gramado Canela.`;
+const whatsappUrl = `https://wa.me/5554992065626?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<BaseLayout
+  title={`${passeio.titulo} - Ingresso Rodízio e Show | Passeios Gramado Canela - Gramado RS`}
+  description="Ingresso para Kongo Pizzaria em Gramado! Rodízio de pizzas com shows temáticos: Aventura na Selva, Alguém viu o Maik, Sons da Natureza. Personagens Maik, Ary, Rainha Aquila. Valores a partir de R$ 199,90."
+  keywords={['Kongo Pizzaria', 'ingresso Kongo Gramado', 'pizzaria temática Gramado', 'rodízio pizza Gramado show', 'Maik gorila Kongo', 'Passeios Gramado Canela']}
+  image={passeio.galeria[0]}
+>
+  <Header />
+
+  <main class="pt-20 lg:pt-24">
+    <!-- Hero Section -->
+    <section
+      class="relative h-96 lg:h-[500px] overflow-hidden"
+      style={`background-image: url('${passeio.galeria[0]}'); background-attachment: fixed; background-size: cover; background-position: center; background-repeat: no-repeat;`}
+    >
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white px-4">
+          <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full mb-4">
+            {passeio.categoria}
+          </span>
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4">{passeio.titulo}</h1>
+          <p class="text-xl lg:text-2xl text-gray-200">{passeio.subtitulo}</p>
+          <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
+            <StarRating rating={passeio.avaliacao} />
+            <span class="text-gray-200">
+              {passeio.avaliacao.toFixed(2)} · {passeio.totalAvaliacoes.toLocaleString('pt-BR')} avaliações
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Conteúdo Principal -->
+        <div class="lg:col-span-3">
+
+          <!-- Descrição -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Sobre esta atração</h2>
+            <p class="text-gray-700 leading-relaxed">{passeio.descricao}</p>
+          </div>
+
+          <!-- Inclusos / Não inclusos -->
+          <div class="mb-8 grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-xl font-bold mb-4">O que está incluso</h3>
+              <ul class="space-y-2">
+                {passeio.inclusos.map(item => (
+                  <li class="flex items-center space-x-3">
+                    <svg class="w-5 h-5 shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700 dark:text-gray-200">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-4">O que não está incluso</h3>
+              <ul class="space-y-2">
+                {passeio.naoInclusos.map(item => (
+                  <li class="flex items-center space-x-3">
+                    <svg class="w-5 h-5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700 dark:text-gray-200">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Duração e Horários -->
+          <div class="mb-8 grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 dark:bg-gray-800/60 p-6 rounded-xl">
+              <h3 class="text-xl font-bold mb-3">Duração média</h3>
+              <p class="text-gray-700 dark:text-gray-200">{passeio.duracao}</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800/60 p-6 rounded-xl">
+              <h3 class="text-xl font-bold mb-3">Horários e shows</h3>
+              <ul class="space-y-1">
+                {passeio.horarios.map(horario => (
+                  <li class="text-gray-700 dark:text-gray-200">🕐 {horario}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Destaques</h3>
+            <div class="flex flex-wrap gap-2">
+              {passeio.tags.map(tag => (
+                <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 rounded-full text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Botões CTA -->
+          <div class="mb-8">
+            <div class="grid md:grid-cols-2 gap-4">
+              <a
+                href={passeio.linkOficial}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold text-lg rounded-lg shadow-lg transition-all hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                🎟️ Comprar ingresso oficial
+              </a>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold text-lg rounded-lg shadow-lg transition-all hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                💬 Falar com atendente no WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Endereço -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Localização</h3>
+            <div class="bg-gray-50 dark:bg-gray-800/60 p-6 rounded-xl flex items-start space-x-4">
+              <div class="flex-shrink-0">
+                <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-gray-800 dark:text-gray-100 mb-1">Endereço</h4>
+                <p class="text-gray-700 dark:text-gray-200 mb-3">{passeio.endereco}</p>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(passeio.endereco)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 dark:text-primary-400 hover:underline"
+                >
+                  📍 Como chegar — Abrir rotas no Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Galeria de Imagens -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Galeria</h3>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {passeio.galeria.map((imagem, index) => (
+                <div class="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition-opacity">
+                  <img
+                    src={imagem}
+                    alt={`${passeio.titulo} - Imagem ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    onclick={`openModal('${imagem}')`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para Galeria -->
+  <div id="imageModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+    <div class="relative max-w-4xl max-h-full">
+      <button
+        onclick="closeModal()"
+        class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl"
+        aria-label="Fechar"
+      >
+        ✕
+      </button>
+      <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg" />
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<script is:inline>
+  function openModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    if (!modal || !modalImage) return;
+    modalImage.src = imageSrc;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+  function closeModal() {
+    const modal = document.getElementById('imageModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('imageModal');
+    if (modal) modal.addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+  });
+</script>

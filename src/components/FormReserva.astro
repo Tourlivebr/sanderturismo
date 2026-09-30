@@ -1,0 +1,862 @@
+---
+interface FaixaPreco {
+  label: string;
+  preco: number;
+}
+interface Props {
+  passeioNome: string;
+  passeioParcelas?: string;
+  passeioPreco?: number;
+  passeioPreco1?: number;
+  passeioPreco2?: number;
+  passeioLabel1?: string;
+  passeioLabel2?: string;
+  passeioTemFaixas?: boolean;
+  passeioDuracao?: string;
+  passeioHorarios?: string[];
+  passeioCategoria?: string;
+  passeioFaixasCompletas?: FaixaPreco[];
+  passeioTemTabelaCompleta?: boolean;
+  ehTransferIdaVolta?: boolean;
+  temContadorPessoas?: boolean;
+  precoPorPessoa?: number;
+  precoCheioPorPessoa?: number;
+}
+const {
+  passeioNome,
+  passeioParcelas,
+  passeioPreco,
+  passeioPreco1,
+  passeioPreco2,
+  passeioLabel1,
+  passeioLabel2,
+  passeioTemFaixas = false,
+  passeioDuracao,
+  passeioHorarios,
+  passeioCategoria,
+  passeioFaixasCompletas,
+  passeioTemTabelaCompleta = false,
+  ehTransferIdaVolta = false,
+  temContadorPessoas = false,
+  precoPorPessoa,
+  precoCheioPorPessoa,
+} = Astro.props;
+
+const whatsappNumber = "5554992065626";
+
+const temFaixasCompletas = passeioTemTabelaCompleta && Array.isArray(passeioFaixasCompletas) && passeioFaixasCompletas.length > 0;
+
+const precoInicial = temFaixasCompletas
+  ? passeioFaixasCompletas![0].preco
+  : (passeioPreco1 !== undefined ? passeioPreco1 : (passeioPreco ?? 0));
+const labelInicial = temFaixasCompletas
+  ? passeioFaixasCompletas![0].label
+  : (passeioLabel1 ?? passeioParcelas ?? '');
+
+const precoPessoaCalculado = precoPorPessoa !== undefined
+  ? precoPorPessoa
+  : (passeioPreco1 ?? passeioPreco ?? 0);
+const precoCheioCalculado = precoCheioPorPessoa !== undefined
+  ? precoCheioPorPessoa
+  : (passeioPreco2 ?? precoPessoaCalculado);
+
+const formatarReal = (v: number) => `R$ ${v.toFixed(2).replace('.', ',')}`;
+
+const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCompletas) : '';
+---
+
+<div
+  class="form-reserva-root"
+  data-tem-faixas={passeioTemFaixas ? 'true' : 'false'}
+  data-tem-faixas-completas={temFaixasCompletas ? 'true' : 'false'}
+  data-preco1={passeioPreco1 ?? ''}
+  data-preco2={passeioPreco2 ?? ''}
+  data-label1={passeioLabel1 ?? ''}
+  data-label2={passeioLabel2 ?? ''}
+  data-faixas-completas={faixasCompletasJSON}
+  data-eh-transfer-ida-volta={ehTransferIdaVolta ? 'true' : 'false'}
+  data-tem-contador-pessoas={temContadorPessoas ? 'true' : 'false'}
+  data-preco-pessoa={precoPessoaCalculado}
+  data-preco-cheio-pessoa={precoCheioCalculado}
+>
+  {(passeioDuracao || passeioHorarios || passeioCategoria) && (
+
+    <h2 class="text-2xl font-bold mb-4">Faça sua Reserva:</h2>
+    <div class="space-y-4 mb-5">
+      {passeioDuracao && (
+        <div class="flex justify-between">
+          <span class="text-gray-600">Duração:</span>
+          <span class="font-medium">{passeioDuracao}</span>
+        </div>
+      )}
+      {passeioHorarios && passeioHorarios.length > 0 && (
+        <div class="flex justify-between">
+          <span class="text-gray-600">Horários:</span>
+          <span class="font-medium">{passeioHorarios.join(', ')}</span>
+        </div>
+      )}
+      {passeioCategoria && (
+        <div class="flex justify-between">
+          <span class="text-gray-600">Categoria:</span>
+          <span class="font-medium">{passeioCategoria}</span>
+        </div>
+      )}
+    </div>
+  )}
+
+  {ehTransferIdaVolta ? (
+    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`} data-modo-transfer novalidate>
+      <h3 class="font-bold text-lg text-gray-900">Complete sua Reserva:</h3>
+
+      <input type="hidden" name="formPrecoCalculado" value="" />
+      <input type="hidden" name="formFaixaAplicada" value="" />
+      <input type="hidden" name="formModoTransfer" value="ida" />
+      <input type="hidden" name="formPassageirosNum" value="1" />
+
+      {/* Resumo automático (substitui os botões de preço) */}
+      <div class="border-2 border-primary-100 bg-gradient-to-br from-primary-50/70 to-white rounded-xl p-4 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-600 text-sm font-medium">Tipo de transfer:</span>
+          <span class="font-bold text-gray-900 text-sm tr-transfer-modo">Somente IDA</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-600 text-sm font-medium">Quantidade:</span>
+          <span class="font-bold text-gray-900 text-sm tr-transfer-qtd">1 passageiro</span>
+        </div>
+        <div class="flex items-center justify-between pt-2 border-t border-primary-100">
+          <span class="text-gray-700 text-base font-semibold">Valor total:</span>
+          <span class="text-2xl font-bold text-primary-600 tr-transfer-valor">R$ 350,00</span>
+        </div>
+        <p class="text-xs text-red-600 hidden tr-transfer-msg-erro">Este transfer permite reservas de 1 a 6 passageiros.</p>
+      </div>
+
+      <!-- DADOS PESSOAIS (sempre visíveis) -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-gray-50/60 space-y-4">
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📋 DADOS PESSOAIS</h4>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nome completo:</label>
+          <input type="text" required name="formNome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Seu nome completo" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Número de passageiros:</label>
+          <input type="number" required min="1" max="6" step="1" name="formPassageiros" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: 3" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Telefone / WhatsApp:</label>
+          <input type="tel" required name="formWhats" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="(00) 00000-0000" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de transfer:</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-modo="ida" class="transfer-modo-btn border-2 border-primary-500 bg-white rounded-lg py-2 text-sm font-bold text-primary-700 shadow-sm ring-2 ring-primary-500 transition-all hover:shadow-md">
+              Somente IDA
+            </button>
+            <button type="button" data-modo="volta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
+              Somente VOLTA
+            </button>
+            <button type="button" data-modo="idavolta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
+              IDA e VOLTA
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DADOS DA IDA -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-blue-50/40 space-y-4" data-section-ida>
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📍 DADOS DA IDA — AEROPORTO DE PORTO ALEGRE → GRAMADO/CANELA</h4>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Data de chegada:</label>
+            <input type="date" required name="formDataChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário previsto de chegada:</label>
+            <input type="time" required name="formHoraChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Número do voo:</label>
+            <input type="text" required name="formVooIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AD 2603" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Companhia aérea:</label>
+            <input type="text" required name="formCiaIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AZUL" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Destino em Gramado ou Canela:</label>
+            <select required name="formDestinoIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white">
+              <option value="">Selecione</option>
+              <option value="Gramado">Gramado</option>
+              <option value="Canela">Canela</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Hotel/pousada ou endereço de destino:</label>
+            <input type="text" required name="formEnderecoDestinoIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Nome e endereço" />
+          </div>
+        </div>
+      </div>
+
+      <!-- DADOS DA VOLTA -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-amber-50/60 space-y-4 hidden" data-section-volta>
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📍 DADOS DA VOLTA — GRAMADO/CANELA → AEROPORTO DE PORTO ALEGRE</h4>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Data do embarque:</label>
+            <input type="date" required name="formDataVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário de saída desejado:</label>
+            <input type="time" required name="formHoraSaidaVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário do voo:</label>
+            <input type="time" required name="formHoraVooVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Número do voo:</label>
+            <input type="text" required name="formVooVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AD 2604" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Companhia aérea:</label>
+            <input type="text" required name="formCiaVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AZUL" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Hotel/pousada ou endereço de embarque:</label>
+          <input type="text" required name="formEnderecoEmbarqueVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Nome e endereço" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Observação adicional:</label>
+        <textarea name="formObs" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none" placeholder="Informações extras (opcional)"></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+        <span>Enviar reserva</span>
+      </button>
+    </form>
+  ) : (
+    <!-- Seletor / Exibição de preço (passeios padrão) -->
+    <div class="mb-5">
+      {temContadorPessoas ? (
+        <div class="space-y-3">
+          <div class="text-center space-y-1">
+            <div class="text-gray-600 text-sm">Por pessoa</div>
+            <div class="text-xl font-bold text-gray-400 line-through form-reserva-cheio">
+              {formatarReal(precoCheioCalculado)}
+            </div>
+            <div class="text-3xl font-bold text-primary-600 form-reserva-unitario">
+              {formatarReal(precoPessoaCalculado)}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center gap-4 py-3">
+            <button
+              type="button"
+              data-pessoa-btn="menos"
+              class="w-11 h-11 rounded-full border-2 border-gray-300 bg-white text-2xl font-bold text-gray-700 hover:border-primary-500 hover:text-primary-600 transition shadow-sm"
+              aria-label="Diminuir pessoas"
+            >−</button>
+            <div class="text-center">
+              <div class="text-xs text-gray-500 font-medium">Quantidade de pessoas</div>
+              <div class="text-3xl font-bold text-gray-900 form-reserva-qtd">1</div>
+            </div>
+            <button
+              type="button"
+              data-pessoa-btn="mais"
+              class="w-11 h-11 rounded-full border-2 border-gray-300 bg-white text-2xl font-bold text-gray-700 hover:border-primary-500 hover:text-primary-600 transition shadow-sm"
+              aria-label="Aumentar pessoas"
+            >+</button>
+          </div>
+
+          <div class="border-2 border-primary-100 bg-gradient-to-br from-primary-50/80 to-white rounded-xl p-4 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-600 font-medium">
+                <span class="form-reserva-qtd-label">1 pessoa</span> × {formatarReal(precoPessoaCalculado)}
+              </span>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-primary-100">
+              <span class="text-gray-900 text-base font-semibold">Valor total:</span>
+              <span class="text-2xl font-bold text-primary-600 form-reserva-total">
+                {formatarReal(precoPessoaCalculado)}
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+        {temFaixasCompletas && passeioFaixasCompletas ? (
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            {passeioFaixasCompletas.map((fx, idx) => (
+              <button
+                type="button"
+                data-faixa-idx={idx}
+                class={`faixa-completa-btn sidebar-faixa-btn border-2 rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ${idx === 0 ? 'border-primary-500 ring-2 ring-primary-500 bg-white' : 'border-gray-200 bg-white'}`}
+              >
+                <div class="text-gray-600 text-xs font-medium mb-1">{fx.label}</div>
+                <div class="text-xl font-bold text-primary-600">{formatarReal(fx.preco)}</div>
+              </button>
+            ))}
+          </div>
+        ) : (passeioTemFaixas && passeioPreco1 !== undefined && passeioPreco2 !== undefined && passeioLabel1 && passeioLabel2) ? (
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <button type="button" data-faixa="1" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-primary-500 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ring-2 ring-primary-500">
+              <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel1}</div>
+              <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco1)}</div>
+            </button>
+            <button type="button" data-faixa="2" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-gray-200 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md">
+              <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel2}</div>
+              <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco2)}</div>
+            </button>
+          </div>
+        ) : null}
+
+        <div class="text-center">
+          <div class="text-gray-600 text-sm mb-1 form-reserva-label">
+            {temFaixasCompletas || passeioTemFaixas ? labelInicial : passeioParcelas}
+          </div>
+          <div class="text-3xl font-bold text-primary-600 form-reserva-valor">
+            {formatarReal(temFaixasCompletas || passeioTemFaixas ? precoInicial : (passeioPreco ?? 0))}
+          </div>
+        </div>
+        </>
+      )}
+    </div>
+
+    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`} novalidate>
+      <h3 class="font-bold text-lg text-gray-900">Complete sua Reserva:</h3>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nome:</label>
+        <input type="text" required name="formNome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="Seu nome completo" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp:</label>
+        <input type="tel" required name="formWhats" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="(00) 00000-0000" />
+      </div>
+
+      {temContadorPessoas && (
+        <input type="hidden" name="formQtdPessoas" value="1" />
+      )}
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Passeio:</label>
+        <input type="text" readonly name="formPasseio" class="w-full px-3 py-2 border border-gray-200 bg-gray-50 rounded-lg text-gray-700 cursor-not-allowed" value={passeioNome} />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Data:</label>
+          <input type="date" required name="formData" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" />
+        </div>
+        {temContadorPessoas && (
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário de saída:</label>
+            <input type="time" name="formHoraSaida" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" />
+          </div>
+        )}
+      </div>
+
+      {temContadorPessoas && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Hotel:</label>
+            <input type="text" name="formHotel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="Nome do hotel / pousada" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Apartamento:</label>
+            <input type="text" name="formApartamento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="Número do apartamento" />
+          </div>
+        </div>
+      )}
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Observação:</label>
+        <textarea name="formObs" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none" placeholder="Número de pessoas, ponto de encontro, horário, etc."></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+        <span>Enviar reserva</span>
+      </button>
+    </form>
+  )}
+
+  <a
+    class="form-reserva-contato w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+    data-base-text={`Olá! Gostaria de mais informações sobre o ${passeioNome}.`}
+    data-whatsapp-direct="true"
+    target="_blank"
+    rel="noopener noreferrer"
+    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Olá! Gostaria de mais informações sobre o ${passeioNome}.${(temFaixasCompletas || passeioTemFaixas) ? ` ${labelInicial}: ${formatarReal(precoInicial)}.` : (passeioPreco !== undefined ? ` Valor: ${formatarReal(passeioPreco)}${passeioParcelas ? ` (${passeioParcelas})` : ''}.` : '')}`)}`}
+  >
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+    </svg>
+    <span>Contato direto</span>
+  </a>
+
+  <div class="text-center mt-2">
+    <p class="text-sm text-gray-600">Resposta rápida garantida!</p>
+  </div>
+</div>
+
+<script>
+  const WHATSAPP = "5554992065626";
+  const fmt = (v) => `R$ ${(Number(v) || 0).toFixed(2).replace('.', ',')}`;
+
+  // TABELA OFICIAL DE PREÇOS (única fonte de verdade)
+  const TABELA_TRANSFER = {
+    ida:     { faixa1: 350, faixa2: 400, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' },
+    volta:   { faixa1: 350, faixa2: 400, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' },
+    idavolta:{ faixa1: 679, faixa2: 839, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' }
+  } as const;
+
+  type ModoTransfer = keyof typeof TABELA_TRANSFER;
+
+  const ROTULOS_MODO: Record<ModoTransfer, string> = {
+    ida: 'Somente IDA',
+    volta: 'Somente VOLTA',
+    idavolta: 'IDA E VOLTA'
+  };
+
+  const TRAJETOS: Record<ModoTransfer, string> = {
+    ida: 'Aeroporto de Porto Alegre → Gramado/Canela',
+    volta: 'Gramado/Canela → Aeroporto de Porto Alegre',
+    idavolta: 'Aeroporto de Porto Alegre → Gramado/Canela → Aeroporto de Porto Alegre'
+  };
+
+  function calcularPrecoTransfer(modo: ModoTransfer, passageiros: number): { preco: number; faixaLabel: string; valido: boolean } {
+    const tabela = TABELA_TRANSFER[modo];
+    if (!tabela || !Number.isFinite(passageiros) || passageiros < 1 || passageiros > 6) {
+      return { preco: 0, faixaLabel: '', valido: false };
+    }
+    if (passageiros <= 4) return { preco: tabela.faixa1, faixaLabel: tabela.labelFaixa1, valido: true };
+    return { preco: tabela.faixa2, faixaLabel: tabela.labelFaixa2, valido: true };
+  }
+
+  if (!(window as any).__enviarReservaGeneric) {
+    (window as any).__enviarReservaGeneric = function(event: Event, passeioNome: string) {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      const el = form.elements as any;
+      const ehModoTransfer = form.dataset.modoTransfer !== undefined;
+
+      const nome = el.formNome?.value?.trim() || '';
+      const whats = el.formWhats?.value?.trim() || '';
+      const passeio = el.formPasseio?.value?.trim() || passeioNome;
+      const data = el.formData?.value || '';
+      const obs = el.formObs?.value?.trim() || '';
+
+      let faixaLabel = '';
+      let faixaValor = '';
+      const root = form.closest('.form-reserva-root');
+      if (root) {
+        const lbl = root.querySelector('.form-reserva-label') as HTMLElement | null;
+        const vlr = root.querySelector('.form-reserva-valor') as HTMLElement | null;
+        if (lbl?.textContent) faixaLabel = lbl.textContent.trim();
+        if (vlr?.textContent) faixaValor = vlr.textContent.trim();
+      }
+
+      const formatarData = (d: string) => {
+        if (!d) return '';
+        const [ano, mes, dia] = d.split('-');
+        return `${dia}/${mes}/${ano}`;
+      };
+
+      if (ehModoTransfer) {
+        // RECALCULAR E VALIDAR antes do envio
+        const modoRaw = (el.formModoTransfer?.value as ModoTransfer) || 'ida';
+        const modo: ModoTransfer = (TABELA_TRANSFER as any)[modoRaw] ? modoRaw : 'ida';
+        const qtdRaw = Number(el.formPassageiros?.value);
+        const calc = calcularPrecoTransfer(modo, qtdRaw);
+
+        if (!calc.valido) {
+          alert('Este transfer permite reservas de 1 a 6 passageiros.');
+          const inputQtd = form.querySelector<HTMLInputElement>('input[name="formPassageiros"]');
+          inputQtd?.focus();
+          return false;
+        }
+
+        // Persiste os valores recalculados
+        el.formPrecoCalculado.value = String(calc.preco);
+        el.formFaixaAplicada.value = calc.faixaLabel;
+
+        const passageiros = qtdRaw;
+        const dataChegada = el.formDataChegada?.value || '';
+        const horaChegada = el.formHoraChegada?.value || '';
+        const vooIda = el.formVooIda?.value?.trim() || '';
+        const ciaIda = el.formCiaIda?.value?.trim() || '';
+        const destinoIda = el.formDestinoIda?.value?.trim() || '';
+        const endDestinoIda = el.formEnderecoDestinoIda?.value?.trim() || '';
+        const dataVolta = el.formDataVolta?.value || '';
+        const horaSaidaVolta = el.formHoraSaidaVolta?.value || '';
+        const horaVooVolta = el.formHoraVooVolta?.value || '';
+        const vooVolta = el.formVooVolta?.value?.trim() || '';
+        const ciaVolta = el.formCiaVolta?.value?.trim() || '';
+        const endEmbarqueVolta = el.formEnderecoEmbarqueVolta?.value?.trim() || '';
+
+        const precisaIda = modo === 'ida' || modo === 'idavolta';
+        const precisaVolta = modo === 'volta' || modo === 'idavolta';
+
+        const linhas = [
+          '*NOVA SOLICITAÇÃO DE TRANSFER*',
+          '',
+          `*Cliente:* ${nome}`,
+          `*WhatsApp:* ${whats}`,
+          `*Tipo de transfer:* ${ROTULOS_MODO[modo]}`,
+          `*Trajeto:* ${TRAJETOS[modo]}`,
+          `*Passageiros:* ${passageiros} ${passageiros === 1 ? 'passageiro' : 'passageiros'}`,
+          `*Faixa de preço:* ${calc.faixaLabel}`,
+          `*VALOR TOTAL:* ${fmt(calc.preco)}`,
+        ];
+
+        if (precisaIda) {
+          linhas.push('');
+          linhas.push('📍 *DADOS DA IDA*');
+          if (dataChegada) linhas.push(`*Data de chegada:* ${formatarData(dataChegada)}`);
+          if (horaChegada) linhas.push(`*Horário de chegada:* ${horaChegada}`);
+          if (vooIda) linhas.push(`*Voo:* ${vooIda}`);
+          if (ciaIda) linhas.push(`*Companhia aérea:* ${ciaIda}`);
+          if (destinoIda) linhas.push(`*Destino:* ${destinoIda}`);
+          if (endDestinoIda) linhas.push(`*Hospedagem/endereço:* ${endDestinoIda}`);
+        }
+
+        if (precisaVolta) {
+          linhas.push('');
+          linhas.push('📍 *DADOS DA VOLTA*');
+          if (dataVolta) linhas.push(`*Data do embarque:* ${formatarData(dataVolta)}`);
+          if (horaSaidaVolta) linhas.push(`*Horário de saída:* ${horaSaidaVolta}`);
+          if (horaVooVolta) linhas.push(`*Horário do voo:* ${horaVooVolta}`);
+          if (vooVolta) linhas.push(`*Voo:* ${vooVolta}`);
+          if (ciaVolta) linhas.push(`*Companhia aérea:* ${ciaVolta}`);
+          if (endEmbarqueVolta) linhas.push(`*Local de embarque:* ${endEmbarqueVolta}`);
+        }
+
+        if (obs) {
+          linhas.push('');
+          linhas.push(`*Observações:* ${obs}`);
+        }
+
+        const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
+        window.open(url, '_blank');
+        return false;
+      }
+
+      const linhas = [
+        `*Nova solicitação de reserva:*`,
+        '',
+        `*Nome:* ${nome}`,
+        `*WhatsApp:* ${whats}`,
+        `*Passeio:* ${passeio}`,
+      ];
+
+      const qtdRaw = Number(el.formQtdPessoas?.value);
+      const qtdPessoas = Number.isFinite(qtdRaw) && qtdRaw >= 1 ? Math.floor(qtdRaw) : null;
+      const formRoot = form.closest('.form-reserva-root') as HTMLElement | null;
+      const ehContadorPessoas = formRoot?.dataset?.temContadorPessoas === 'true';
+      const precoPessoa = Number(formRoot?.dataset?.precoPessoa || '0');
+
+      if (ehContadorPessoas && qtdPessoas && precoPessoa > 0) {
+        const total = qtdPessoas * precoPessoa;
+        linhas.push(`*Pessoas:* ${qtdPessoas} ${qtdPessoas === 1 ? 'pessoa' : 'pessoas'}`);
+        linhas.push(`*Valor por pessoa:* ${fmt(precoPessoa)}`);
+        linhas.push(`*VALOR TOTAL:* ${fmt(total)}`);
+      } else if (faixaLabel && faixaValor) {
+        linhas.push(`*Faixa:* ${faixaLabel}`);
+        linhas.push(`*Valor:* ${faixaValor}`);
+      }
+
+      if (data) linhas.push(`*Data:* ${formatarData(data)}`);
+
+      const horaSaida = el.formHoraSaida?.value?.trim() || '';
+      const hotel = el.formHotel?.value?.trim() || '';
+      const apartamento = el.formApartamento?.value?.trim() || '';
+
+      if (horaSaida) linhas.push(`*Horário de saída:* ${horaSaida}`);
+      if (hotel) linhas.push(`*Hotel:* ${hotel}`);
+      if (apartamento) linhas.push(`*Apartamento:* ${apartamento}`);
+
+      if (obs) linhas.push(`*Observação:* ${obs}`);
+
+      const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
+      window.open(url, '_blank');
+      return false;
+    };
+  }
+
+  // ===== INICIALIZA CONTADOR DE PESSOAS (passeios por pessoa: ex. Tour Vinhos e Sabores) =====
+  document.querySelectorAll('.form-reserva-root[data-tem-contador-pessoas="true"]').forEach(root => {
+    const r = root as HTMLElement;
+    const precoUnit = Number(r.dataset.precoPessoa || '0');
+    const precoCheio = Number(r.dataset.precoCheioPessoa || '0');
+
+    const qtdEl = r.querySelector<HTMLElement>('.form-reserva-qtd');
+    const qtdLabelEl = r.querySelector<HTMLElement>('.form-reserva-qtd-label');
+    const totalEl = r.querySelector<HTMLElement>('.form-reserva-total');
+    const unitEl = r.querySelector<HTMLElement>('.form-reserva-unitario');
+    const cheioEl = r.querySelector<HTMLElement>('.form-reserva-cheio');
+    const hiddenQtd = r.querySelector<HTMLInputElement>('input[name="formQtdPessoas"]');
+    const contatoEl = r.querySelector<HTMLAnchorElement>('[data-whatsapp-direct="true"]');
+    const baseText = (contatoEl?.dataset as any)?.baseText || '';
+
+    let qtd = 1;
+    const clamp = (v: number) => Math.max(1, Math.min(99, Math.floor(v || 1)));
+    const atualizar = () => {
+      qtd = clamp(qtd);
+      const total = qtd * precoUnit;
+      if (qtdEl) qtdEl.textContent = String(qtd);
+      if (qtdLabelEl) qtdLabelEl.textContent = `${qtd} ${qtd === 1 ? 'pessoa' : 'pessoas'}`;
+      if (totalEl) totalEl.textContent = fmt(total);
+      if (hiddenQtd) hiddenQtd.value = String(qtd);
+      if (unitEl && precoUnit > 0) unitEl.textContent = fmt(precoUnit);
+      if (cheioEl && precoCheio > 0 && precoCheio !== precoUnit) cheioEl.textContent = fmt(precoCheio);
+      if (contatoEl) {
+        const msg = precoUnit
+          ? `${baseText} ${qtd} ${qtd === 1 ? 'pessoa' : 'pessoas'} — ${fmt(precoUnit)} por pessoa. Total: ${fmt(total)}.`
+          : baseText;
+        contatoEl.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+      }
+    };
+    r.querySelectorAll<HTMLButtonElement>('[data-pessoa-btn]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const op = btn.dataset.pessoaBtn;
+        if (op === 'mais') qtd += 1;
+        if (op === 'menos') qtd -= 1;
+        atualizar();
+      });
+    });
+    atualizar();
+  });
+
+  // ===== INICIALIZA TRANSFER (IDA/VOLTA) =====
+  document.querySelectorAll('.form-reserva-root[data-eh-transfer-ida-volta="true"]').forEach(root => {
+    const form = root.querySelector<HTMLFormElement>('form[data-modo-transfer]');
+    if (!form) return;
+
+    const sectionIda = form.querySelector<HTMLElement>('[data-section-ida]');
+    const sectionVolta = form.querySelector<HTMLElement>('[data-section-volta]');
+    const botoesModo = form.querySelectorAll<HTMLButtonElement>('.transfer-modo-btn');
+    const inputQtd = form.querySelector<HTMLInputElement>('input[name="formPassageiros"]');
+    const elModo = form.querySelector<HTMLInputElement>('input[name="formModoTransfer"]');
+    const elPrecoCalc = form.querySelector<HTMLInputElement>('input[name="formPrecoCalculado"]');
+    const elFaixa = form.querySelector<HTMLInputElement>('input[name="formFaixaAplicada"]');
+    const elPassNum = form.querySelector<HTMLInputElement>('input[name="formPassageirosNum"]');
+
+    const rotuloModoEl = form.querySelector<HTMLElement>('.tr-transfer-modo');
+    const rotuloQtdEl = form.querySelector<HTMLElement>('.tr-transfer-qtd');
+    const rotuloValorEl = form.querySelector<HTMLElement>('.tr-transfer-valor');
+    const msgErroEl = form.querySelector<HTMLElement>('.tr-transfer-msg-erro');
+
+    const camposIdaObrigatorios = ['formDataChegada','formHoraChegada','formVooIda','formCiaIda','formDestinoIda','formEnderecoDestinoIda'];
+    const camposVoltaObrigatorios = ['formDataVolta','formHoraSaidaVolta','formHoraVooVolta','formVooVolta','formCiaVolta','formEnderecoEmbarqueVolta'];
+
+    function atualizarPreco(modo: ModoTransfer, passageiros: number) {
+      const calc = calcularPrecoTransfer(modo, passageiros);
+
+      if (rotuloModoEl) rotuloModoEl.textContent = ROTULOS_MODO[modo];
+      if (rotuloQtdEl) rotuloQtdEl.textContent = `${passageiros} ${passageiros === 1 ? 'passageiro' : 'passageiros'}`;
+
+      if (calc.valido) {
+        if (rotuloValorEl) rotuloValorEl.textContent = fmt(calc.preco);
+        if (msgErroEl) msgErroEl.classList.add('hidden');
+        if (inputQtd) inputQtd.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+      } else {
+        if (rotuloValorEl) rotuloValorEl.textContent = '--';
+        if (msgErroEl) msgErroEl.classList.remove('hidden');
+        if (inputQtd) inputQtd.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+      }
+
+      if (elPrecoCalc) elPrecoCalc.value = calc.valido ? String(calc.preco) : '';
+      if (elFaixa) elFaixa.value = calc.valido ? calc.faixaLabel : '';
+      if (elPassNum) elPassNum.value = String(passageiros);
+      if (elModo) elModo.value = modo;
+    }
+
+    function aplicarModo(modo: ModoTransfer) {
+      botoesModo.forEach(b => {
+        const ativo = b.dataset.modo === modo;
+        b.classList.toggle('border-primary-500', ativo);
+        b.classList.toggle('ring-2', ativo);
+        b.classList.toggle('ring-primary-500', ativo);
+        b.classList.toggle('text-primary-700', ativo);
+        b.classList.toggle('border-gray-200', !ativo);
+        b.classList.toggle('text-gray-700', !ativo);
+      });
+
+      // Seções e requireds
+      if (sectionIda) {
+        const visivel = modo === 'ida' || modo === 'idavolta';
+        sectionIda.classList.toggle('hidden', !visivel);
+        camposIdaObrigatorios.forEach(nm => {
+          const c = form.elements.namedItem(nm) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+          if (c) (c as any).required = visivel;
+        });
+      }
+
+      if (sectionVolta) {
+        const visivel = modo === 'volta' || modo === 'idavolta';
+        sectionVolta.classList.toggle('hidden', !visivel);
+        camposVoltaObrigatorios.forEach(nm => {
+          const c = form.elements.namedItem(nm) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+          if (c) (c as any).required = visivel;
+        });
+      }
+
+      const qtd = clampQtd(Number(inputQtd?.value ?? 1));
+      atualizarPreco(modo, qtd);
+    }
+
+    function clampQtd(v: number): number {
+      if (!Number.isFinite(v)) return 1;
+      if (v < 1) return 1;
+      if (v > 6) return 6;
+      return Math.floor(v);
+    }
+
+    botoesModo.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modo = btn.dataset.modo as ModoTransfer;
+        if (!(TABELA_TRANSFER as any)[modo]) return;
+        aplicarModo(modo);
+      });
+    });
+
+    inputQtd?.addEventListener('input', () => {
+      const modo = (elModo?.value as ModoTransfer) || 'ida';
+      const raw = Number(inputQtd.value);
+      const qtd = Number.isFinite(raw) ? raw : 1;
+      atualizarPreco(modo, qtd);
+    });
+    inputQtd?.addEventListener('change', () => {
+      const modo = (elModo?.value as ModoTransfer) || 'ida';
+      const qtd = clampQtd(Number(inputQtd.value));
+      inputQtd.value = String(qtd);
+      atualizarPreco(modo, qtd);
+    });
+
+    // Inicialização inicial
+    aplicarModo('ida');
+  });
+
+  // ===== INICIALIZA FAIXAS (passeios padrão) =====
+  document.querySelectorAll('.form-reserva-root').forEach(root => {
+    const temFaixas = (root as HTMLElement).dataset.temFaixas === 'true';
+    const temFaixasCompletas = (root as HTMLElement).dataset.temFaixasCompletas === 'true';
+    if (!temFaixas && !temFaixasCompletas) return;
+
+    let faixasList: Array<{label: string; preco: number}> = [];
+    if (temFaixasCompletas) {
+      try {
+        const raw = (root as HTMLElement).dataset.faixasCompletas || '[]';
+        faixasList = JSON.parse(raw);
+      } catch (_) {
+        faixasList = [];
+      }
+    }
+
+    const p1 = Number((root as HTMLElement).dataset.preco1 || '0');
+    const p2 = Number((root as HTMLElement).dataset.preco2 || '0');
+    const l1 = (root as HTMLElement).dataset.label1 || '';
+    const l2 = (root as HTMLElement).dataset.label2 || '';
+
+    const labelEl = root.querySelector('.form-reserva-label') as HTMLElement | null;
+    const valorEl = root.querySelector('.form-reserva-valor') as HTMLElement | null;
+    const contatoEl = root.querySelector('.form-reserva-contato') as HTMLAnchorElement | null;
+    const baseText = (contatoEl?.dataset as any)?.baseText || '';
+
+    const btnsSidebar = root.querySelectorAll<HTMLButtonElement>('.sidebar-faixa-btn');
+
+    const aplicarPrecoLabel = (preco: number, label: string) => {
+      if (labelEl) labelEl.textContent = label;
+      if (valorEl) valorEl.textContent = fmt(preco);
+      if (contatoEl) {
+        const msg = `${baseText} ${label}: ${fmt(preco)}.`;
+        contatoEl.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+      }
+    };
+
+    const marcarBtnAtivo = (estaAtivoFn: (btn: HTMLButtonElement) => boolean) => {
+      btnsSidebar.forEach(b => {
+        const ativo = estaAtivoFn(b);
+        b.classList.toggle('border-primary-500', ativo);
+        b.classList.toggle('ring-2', ativo);
+        b.classList.toggle('ring-primary-500', ativo);
+        b.classList.toggle('border-gray-200', !ativo);
+      });
+    };
+
+    // Ramo 1: multi-faixas (5 opções, ex: Maria Fumaça)
+    if (temFaixasCompletas && faixasList.length > 0) {
+      const aplicarIdx = (idx: number) => {
+        const fx = faixasList[idx] || faixasList[0];
+        aplicarPrecoLabel(fx.preco, fx.label);
+        marcarBtnAtivo((b) => {
+          const bi = Number(b.dataset.faixaIdx ?? '-1');
+          return bi === idx;
+        });
+      };
+
+      btnsSidebar.forEach(btn => {
+        if (btn.dataset.faixaIdx === undefined) return;
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.faixaIdx || '0');
+          aplicarIdx(idx);
+          window.dispatchEvent(new CustomEvent('faixa-completa-mudou', { detail: { idx } }));
+        });
+      });
+
+      window.addEventListener('faixa-completa-mudou', ((e: CustomEvent) => {
+        const idx = Number(e?.detail?.idx ?? 0);
+        if (!Number.isNaN(idx)) aplicarIdx(idx);
+      }) as EventListener);
+
+      return;
+    }
+
+    // Ramo 2: 2 faixas (padrão)
+    const aplicarFaixa = (faixa: '1' | '2') => {
+      const preco = faixa === '1' ? p1 : p2;
+      const label = faixa === '1' ? l1 : l2;
+      aplicarPrecoLabel(preco, label);
+      marcarBtnAtivo((b) => b.dataset.faixa === faixa);
+    };
+
+    btnsSidebar.forEach(btn => {
+      if (!btn.dataset.faixa) return;
+      btn.addEventListener('click', () => {
+        const faixa = btn.dataset.faixa as '1' | '2';
+        aplicarFaixa(faixa);
+        window.dispatchEvent(new CustomEvent('faixa-pessoas-mudou', { detail: { faixa, origem: 'sidebar' } }));
+      });
+    });
+
+    window.addEventListener('faixa-pessoas-mudou', ((e: CustomEvent) => {
+      const faixa = e?.detail?.faixa as '1' | '2' | undefined;
+      if (faixa) aplicarFaixa(faixa);
+    }) as EventListener);
+  });
+</script>

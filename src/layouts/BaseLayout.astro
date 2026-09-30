@@ -1,0 +1,186 @@
+---
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+  keywords?: string[];
+}
+
+const {
+  title,
+  description,
+  image = '/images/logo_p_pgc_t.png',
+  canonical,
+  noindex = false,
+  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Passeios Gramado Canela'],
+} = Astro.props;
+
+// Criar URLs de forma segura
+const baseUrl = Astro.site?.toString() || 'https://passeiogramadocanela.vercel.app/';
+const canonicalURL = canonical || new URL(Astro.url.pathname, baseUrl).toString();
+const socialImage = new URL(image, baseUrl).toString();
+
+// Detecta tipo MIME e dimensões conhecidas do og:image (WhatsApp/Facebook usam isso)
+const isJpg = image.toLowerCase().endsWith('.jpg') || image.toLowerCase().endsWith('.jpeg');
+const isPng = image.toLowerCase().endsWith('.png');
+const ogType = isJpg ? 'image/jpeg' : isPng ? 'image/png' : 'image/jpeg';
+// Dimensões conhecidas dos nossos assets (WhatsApp prefere >= 300px, recomendado 1200x630)
+const ogWidth =
+  image.includes('og-default-1200x630') ? 1200 :
+  image.includes('link_passeios1') ? 1600 :
+  image.includes('logo') ? 512 : 1200;
+const ogHeight =
+  image.includes('og-default-1200x630') ? 630 :
+  image.includes('link_passeios1') ? 900 :
+  image.includes('logo') ? 512 : 630;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(', ')} />
+    <meta name="author" content="Passeios Gramado Canela" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph / Facebook / WhatsApp (WhatsApp respeita OG) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Passeios Gramado Canela" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    
+    <!-- Imagem OG (obrigatória para WhatsApp) + sub-propriedades -->
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:secure_url" content={socialImage} />
+    <meta property="og:image:type" content={ogType} />
+    <meta property="og:image:width" content={ogWidth.toString()} />
+    <meta property="og:image:height" content={ogHeight.toString()} />
+    <meta property="og:image:alt" content={title} />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@passeiogramadocanela" />
+    <meta name="twitter:creator" content="@passeiogramadocanela" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={title} />
+    
+    <!-- WhatsApp específico: pré-carrega og:image no body (força cache) -->
+    <link rel="preload" as="image" href={socialImage} imagesrcset="" imagesizes="" fetchpriority="high" />
+    <link rel="image_src" href={socialImage} />
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "TravelAgency",
+      "name": "Passeios Gramado Canela",
+      "alternateName": "Guia Turismo Serra Gaúcha",
+      "description": description,
+      "url": canonicalURL,
+      "image": socialImage,
+      "telephone": "+5554992065626",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gramado",
+        "addressRegion": "Rio Grande do Sul",
+        "addressCountry": "BR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -29.3655,
+        "longitude": -50.8243
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+      "priceRange": "R$",
+      "sameAs": [
+        "https://www.instagram.com/passeiogramadocanela//",
+        "https://www.facebook.com/passeiogramadocanela"
+      ]
+    })} />
+
+    
+    <style>
+      :root {
+        /* Paleta Passeios Gramado Canela — extraída fielmente da logo oficial
+           Primary: VERDE FLORESTA (montanhas + "Gramado" + anel externo — cor de identidade Serra Gaúcha)
+           Accent:  DOURADO BRONZE (sol + "Tchê" + anel interno + caminho — tom de luxo/destaque)
+           Cream:   CREME OFF-WHITE (fundo circular da logo — base aconchegante)
+           Dark:    Neutros quentes alinhados com o creme e o verde profundo */
+        --clr-primary-50:  #F3F7F3;
+        --clr-primary-100: #DFE8E0;
+        --clr-primary-200: #BDCFBF;
+        --clr-primary-300: #8FB292;
+        --clr-primary-400: #5C8A63;
+        --clr-primary-500: #3A6841;
+        --clr-primary-600: #2A5031;
+        --clr-primary-700: #203E26;
+        --clr-primary:      #2A5031;  /* verde floresta (montanhas + "Gramado") */
+
+        --clr-accent-50:  #FBF4E3;
+        --clr-accent-100: #F4E3B9;
+        --clr-accent-200: #EACA7E;
+        --clr-accent-300: #DFA953;
+        --clr-accent-400: #CE8A37;
+        --clr-accent-500: #B57323;
+        --clr-accent-600: #9D601C;
+        --clr-accent:      #B57323;  /* dourado bronze ("Tchê" + anel interno) */
+
+        --clr-cream-50:   #FDF8EC;
+
+        --clr-dark-50:  #FAF6ED;
+        --clr-dark-100: #EEE7D5;
+        --clr-dark-300: #BBAD88;
+        --clr-dark-500: #5E5336;
+        --clr-dark-700: #282415;
+        --clr-dark-800: #1A180E;
+        --clr-dark:      #1A180E;
+
+        --clr-whatsapp: #25D366;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      ::selection {
+        background: var(--clr-primary);
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-dark-800 font-sans antialiased">
+    <slot />
+    <WhatsAppButton />
+  </body>
+</html>

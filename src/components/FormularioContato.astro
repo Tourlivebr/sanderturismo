@@ -1,0 +1,873 @@
+---
+/* TABELA OFICIAL DE VALORES (única fonte de verdade para o formulário de contato)
+   Regras para faixas de passageiros:
+   - Passeios privativos / Translados: usam faixas {ate4, ate6}
+   - Ingressos (por pessoa): usam precoPessoa (R$ por pessoa) + opcionalmente faixa adulto/criança (por pessoa)
+*/
+const TABELA_VALORES = {
+  /* ============== INGRESSOS E ATRAÇÕES (7) — Ordem: ParksNet → Kongo → demais (igual aos cards) ============== */
+  "ParksNet Passaporte": {
+    tipo: "ingresso",
+    unidade: "por pessoa (valor referência)",
+    faixas: [
+      { rotulo: "Passaporte Adulto", preco: 399 },
+      { rotulo: "Passaporte Criança", preco: 299 },
+    ],
+    tags: ["Todos os parques", "Snowland, NBA Park, Skyglass"]
+  },
+  "Kongo Pizzaria": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Rodízio + Show (Sem reserva)", preco: 199.90 },
+      { rotulo: "Reserva de mesa (17:30 / 22:00)", preco: 259.90 },
+    ],
+    tags: ["Selva temática em Gramado", "Maik, Ary, Rainha Aquila", "Shows: Aventura na Selva, Alguém viu o Maik, Sons da Natureza"]
+  },
+  "Parque da Mônica": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto (acima de 14 anos)", preco: 219 },
+      { rotulo: "Infantil (3 a 14 anos)", preco: 199 },
+    ],
+    tags: ["Parque Vila da Mônica Gramado", "Turma da Mônica", "Família"]
+  },
+  "Era do Fogo Fondue Temático": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto (acima de 6 anos)", preco: 180 },
+      { rotulo: "Criança (3 a 6 anos)", preco: 90 },
+    ],
+    tags: ["Ingresso para Gramado", "Fondue temático"]
+  },
+  "Ferrovia Secreta Hector": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto", preco: 220 },
+      { rotulo: "Criança (3 a 10 anos)", preco: 110 },
+    ],
+    tags: ["Gastronomia temática", "Trem mágico"]
+  },
+  "Hector Pizzaria": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Rodízio Adulto", preco: 150 },
+      { rotulo: "Rodízio Criança (4 a 10 anos)", preco: 75 },
+    ],
+    tags: ["Rodízio de pizza", "Escola de Magia Ônyra"]
+  },
+  "Gatzz Fondue & Show": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto (18+)", preco: 280 },
+      { rotulo: "Acompanhante", preco: 280 },
+    ],
+    tags: ["Dinner show", "Fondue premium"]
+  },
+  "Passaporte Grupo Dreams": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto", preco: 890 },
+      { rotulo: "Criança", preco: 690 },
+    ],
+    tags: ["7 atrações", "Porsche Cayman incluso"]
+  },
+
+  /* ============== PASSEIOS E TRANSFERES (9) - valores conforme cards oficiais ============== */
+  "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela": {
+    tipo: "privativo",
+    unidade: "por veículo",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 679 },
+      { rotulo: "5 a 6 passageiros", preco: 839 },
+    ],
+    tags: ["Transfer ida e volta", "POA → Gramado/Canela"]
+  },
+  "City Tour Privativo": {
+    tipo: "privativo",
+    unidade: "por veículo",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 380 },
+      { rotulo: "5 a 6 passageiros", preco: 480 },
+    ],
+    tags: ["City Tour privativo", "Roteiro personalizado"]
+  },
+  "Transporte Olivas": {
+    tipo: "privativo",
+    unidade: "por veículo (ida e volta)",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 200 },
+      { rotulo: "5 a 6 passageiros", preco: 350 },
+    ],
+    tags: ["Translado Olivas de Gramado", "Roteiro vinícola"]
+  },
+  "Transporte Jolimont": {
+    tipo: "privativo",
+    unidade: "por veículo (ida e volta)",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 200 },
+      { rotulo: "5 a 6 passageiros", preco: 350 },
+    ],
+    tags: ["Translado Vinícola Jolimont"]
+  },
+  "Transporte Sky Glass": {
+    tipo: "privativo",
+    unidade: "por veículo (ida e volta)",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 200 },
+      { rotulo: "5 a 6 passageiros", preco: 320 },
+    ],
+    tags: ["Skyglass Canela", "Bondinho aéreo"]
+  },
+  "Bondinhos Transporte": {
+    tipo: "privativo",
+    unidade: "por veículo (ida e volta)",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 180 },
+      { rotulo: "5 a 6 passageiros", preco: 320 },
+    ],
+    tags: ["Bondinhos aéreos Canela"]
+  },
+  "City Tour Nova Petrópolis": {
+    tipo: "privativo",
+    unidade: "por veículo",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 320 },
+      { rotulo: "5 a 6 passageiros", preco: 400 },
+    ],
+    tags: ["Nova Petrópolis", "Roteiro alemão"]
+  },
+  "Lumni Transporte": {
+    tipo: "privativo",
+    unidade: "por veículo (ida e volta)",
+    faixas: [
+      { rotulo: "1 a 4 passageiros", preco: 200 },
+      { rotulo: "5 a 6 passageiros", preco: 300 },
+    ],
+    tags: ["Experiência Lumni"]
+  },
+  "Trem Maria Fumaça": {
+    tipo: "privativo",
+    unidade: "por pacote",
+    faixas: [
+      { rotulo: "1 a 2 passageiros", preco: 1300 },
+      { rotulo: "Até 6 passageiros", preco: 2999.90 },
+    ],
+    tags: ["Trem Maria Fumaça", "Serra Gaúcha"]
+  },
+  "Tour Vinhos e Sabores": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Por pessoa (todas as idades)", preco: 229 },
+    ],
+    tags: ["Vinícola Jolimont", "Família Chaulet", "Catedral de Pedra Canela", "Chocolate Gramadense"]
+  },
+};
+
+/* Lista amigável dos itens exibidos no dropdown (ordem: ParksNet primeiro → Kongo → demais ingressos → depois passeios/translados) */
+const passeios = [
+  // Ingressos e Atrações (ordem exata dos cards)
+  "ParksNet Passaporte",
+  "Kongo Pizzaria",
+  "Parque da Mônica",
+  "Era do Fogo Fondue Temático",
+  "Ferrovia Secreta Hector",
+  "Hector Pizzaria",
+  "Gatzz Fondue & Show",
+  "Passaporte Grupo Dreams",
+  // Passeios e Transferes (ordem exata dos cards)
+  "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+  "City Tour Privativo",
+  "Transporte Olivas",
+  "Transporte Jolimont",
+  "Transporte Sky Glass",
+  "Bondinhos Transporte",
+  "City Tour Nova Petrópolis",
+  "Lumni Transporte",
+  "Trem Maria Fumaça",
+  "Tour Vinhos e Sabores",
+];
+
+/** FUNÇÃO CENTRALIZADA: calcula o valor de 1 item selecionado
+  @param {string} nome - Nome EXATO do passeio/ingresso na TABELA_VALORES
+  @param {number} qtd - Quantidade para ingressos (pessoas) OU 1 (padrão) para privativos
+  @param {number?} faixaIdx - Índice da faixa selecionada (0, 1, 2...)
+  @returns {number} valor em reais
+*/
+function calcularValorItem(nome, qtd = 1, faixaIdx = 0) {
+  const cfg = TABELA_VALORES[nome];
+  if (!cfg) return 0;
+  const precoUnit = cfg.faixas[faixaIdx]?.preco ?? cfg.faixas[0]?.preco ?? 0;
+  if (cfg.tipo === "privativo") return precoUnit;
+  return precoUnit * Math.max(0, Math.floor(qtd || 0));
+}
+---
+<section class="relative pb-8 lg:pb-12 pt-0">
+  <div class="max-w-7xl mx-auto px-4 py-8 relative z-20">
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12 items-start">
+    <!-- Coluna Esquerda: Texto e Orientações -->
+    <div class="order-1 xl:order-1 space-y-6 lg:space-y-8">
+      <div class="text-center">
+        <h2 class="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          Reserve Seu Passeio dos Sonhos!
+        </h2>
+
+        <!-- Balão de Fala -->
+        <div class="relative bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600 rounded-3xl p-4 lg:p-6 shadow-lg animate-pulse">
+          <div class="text-center">
+            <p class="text-base lg:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+              Escolha os passeios, que nós montamos a melhor programação para você e sua família! 
+              <span class="font-semibold text-blue-600 dark:text-blue-400">É rápido e gratuito!</span>
+            </p>
+          </div>
+          <!-- Seta do balão -->
+          <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
+            <div class="w-6 h-6 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600 rotate-45"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna Direita: Formulário -->
+    <div class="order-1 xl:order-2 space-y-6 lg:space-y-8">
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
+            Preencha seus dados
+          </span>
+        </div>
+      </div>
+
+      <!-- Formulário -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 lg:p-6 xl:p-8">
+        <form id="contactForm" class="space-y-4 lg:space-y-6" autocomplete="on" novalidate>
+          <!-- Nome -->
+          <div>
+            <label for="nome" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Nome Completo *
+            </label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              required
+              autocomplete="name"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors"
+              placeholder="Digite seu nome completo"
+            />
+          </div>
+
+          <!-- Data -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Data Desejada para início dos Passeios *
+            </label>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <select
+                  id="dia"
+                  name="dia"
+                  required
+                  class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors"
+                >
+                  <option value="">Dia</option>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                    <option value={String(day).padStart(2,'0')}>{day}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  id="mes"
+                  name="mes"
+                  required
+                  class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors"
+                >
+                  <option value="">Mês</option>
+                  <option value="01">Janeiro</option>
+                  <option value="02">Fevereiro</option>
+                  <option value="03">Março</option>
+                  <option value="04">Abril</option>
+                  <option value="05">Maio</option>
+                  <option value="06">Junho</option>
+                  <option value="07">Julho</option>
+                  <option value="08">Agosto</option>
+                  <option value="09">Setembro</option>
+                  <option value="10">Outubro</option>
+                  <option value="11">Novembro</option>
+                  <option value="12">Dezembro</option>
+                </select>
+              </div>
+              <div>
+                <select
+                  id="ano"
+                  name="ano"
+                  required
+                  class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors"
+                >
+                  <option value="">Ano</option>
+                  {Array.from({ length: 3 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                    <option value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passeios (Seleção Múltipla com Dropdown) -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              Passeios / Ingressos de Interesse * <span class="text-sm text-gray-500">(Selecione um ou mais)</span>
+            </label>
+
+            <div class="relative">
+              <button
+                type="button"
+                id="passeiosDropdown"
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors text-left flex items-center justify-between"
+              >
+                <span id="passeiosSelected" class="text-gray-500 dark:text-gray-400">Selecione os passeios/ingressos...</span>
+                <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" id="dropdownIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+
+              <!-- Menu dropdown -->
+              <div
+                id="passeiosMenu"
+                class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-64 overflow-y-auto hidden"
+              >
+                <div class="p-2 space-y-1">
+                  {passeios.map((passeio) => (
+                    <label class="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-600 rounded cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        name="passeios"
+                        value={passeio}
+                        class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded mr-3"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300 leading-5">
+                        {passeio}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <!-- Tags dos itens selecionados -->
+            <div id="selectedTags" class="mt-3 flex flex-wrap gap-2 min-h-[24px]"></div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              💡 Clique no menu acima para selecionar múltiplos itens. Ajuste faixas e quantidades abaixo.
+            </p>
+          </div>
+
+          <!-- PAINEL DINÂMICO: configurações por item selecionado + resumo -->
+          <div id="painelValores" class="space-y-4 hidden">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-dashed border-gray-200 dark:border-gray-600"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-3 bg-white dark:bg-gray-800 text-primary-700 dark:text-primary-300 font-semibold">
+                  Valores e opções
+                </span>
+              </div>
+            </div>
+
+            <!-- Container dinâmico de itens selecionados -->
+            <div id="itensSelecionados" class="space-y-3"></div>
+
+            <!-- RESUMO TOTAL -->
+            <div class="mt-4 p-4 rounded-xl bg-primary-50 dark:bg-primary-900/20 border border-primary-200/60 dark:border-primary-700/40">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs uppercase tracking-wide text-primary-700 dark:text-primary-300 font-semibold">
+                    Total estimado
+                  </p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                    <span id="resumoQtd">0</span> item(ns) selecionado(s)
+                  </p>
+                </div>
+                <div class="text-right">
+                  <p id="resumoTotal" class="text-2xl lg:text-3xl font-extrabold text-primary-700 dark:text-primary-300">
+                    R$ 0,00
+                  </p>
+                  <p id="resumoObs" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    *Sujeito à confirmação de disponibilidade
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Telefone -->
+          <div>
+            <label for="telefone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Telefone/WhatsApp *
+            </label>
+            <input
+              type="tel"
+              id="telefone"
+              name="telefone"
+              required
+              inputmode="tel"
+              autocomplete="tel"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors"
+              placeholder="(00) 00000-0000"
+            />
+          </div>
+
+          <!-- Mensagem -->
+          <div>
+            <label for="mensagem" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Mensagem Adicional
+            </label>
+            <textarea
+              id="mensagem"
+              name="mensagem"
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white transition-colors resize-none"
+              placeholder="Conte-nos mais sobre suas expectativas, preferências especiais, observações..."
+            ></textarea>
+          </div>
+
+          <!-- Botão de Envio -->
+          <div class="pt-4">
+            <button
+              type="submit"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-3 text-lg"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+              </svg>
+              Enviar via WhatsApp
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+// ==============================
+// 1) TABELA VALORES EMBUTIDA (alinhada com a tabela do Astro)
+// ==============================
+const TABELA_VALORES = {
+  "ParksNet Passaporte": { tipo:"ingresso", unidade:"por pessoa (valor referência)",
+    faixas:[{rotulo:"Passaporte Adulto",preco:399},{rotulo:"Passaporte Criança",preco:299}] },
+  "Kongo Pizzaria": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Rodízio + Show (Sem reserva)",preco:199.90},{rotulo:"Reserva de mesa (17:30 / 22:00)",preco:259.90}] },
+  "Parque da Mônica": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto (acima de 14 anos)",preco:219},{rotulo:"Infantil (3 a 14 anos)",preco:199}] },
+  "Era do Fogo Fondue Temático": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto (acima de 6 anos)",preco:180},{rotulo:"Criança (3 a 6 anos)",preco:90}] },
+  "Ferrovia Secreta Hector": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto",preco:220},{rotulo:"Criança (3 a 10 anos)",preco:110}] },
+  "Hector Pizzaria": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Rodízio Adulto",preco:150},{rotulo:"Rodízio Criança (4 a 10 anos)",preco:75}] },
+  "Gatzz Fondue & Show": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto (18+)",preco:280},{rotulo:"Acompanhante",preco:280}] },
+  "Passaporte Grupo Dreams": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto",preco:890},{rotulo:"Criança",preco:690}] },
+
+  "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela": { tipo:"privativo", unidade:"por veículo",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:679},{rotulo:"5 a 6 passageiros",preco:839}] },
+  "City Tour Privativo": { tipo:"privativo", unidade:"por veículo",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:380},{rotulo:"5 a 6 passageiros",preco:480}] },
+  "Transporte Olivas": { tipo:"privativo", unidade:"por veículo (ida e volta)",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:200},{rotulo:"5 a 6 passageiros",preco:350}] },
+  "Transporte Jolimont": { tipo:"privativo", unidade:"por veículo (ida e volta)",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:200},{rotulo:"5 a 6 passageiros",preco:350}] },
+  "Transporte Sky Glass": { tipo:"privativo", unidade:"por veículo (ida e volta)",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:200},{rotulo:"5 a 6 passageiros",preco:320}] },
+  "Bondinhos Transporte": { tipo:"privativo", unidade:"por veículo (ida e volta)",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:180},{rotulo:"5 a 6 passageiros",preco:320}] },
+  "City Tour Nova Petrópolis": { tipo:"privativo", unidade:"por veículo",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:320},{rotulo:"5 a 6 passageiros",preco:400}] },
+  "Lumni Transporte": { tipo:"privativo", unidade:"por veículo (ida e volta)",
+    faixas:[{rotulo:"1 a 4 passageiros",preco:200},{rotulo:"5 a 6 passageiros",preco:300}] },
+  "Trem Maria Fumaça": { tipo:"privativo", unidade:"por pacote",
+    faixas:[{rotulo:"1 a 2 passageiros",preco:1300},{rotulo:"Até 6 passageiros",preco:2999.90}] },
+  "Tour Vinhos e Sabores": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Por pessoa (todas as idades)",preco:229}] }
+};
+const TODOS_ITENS = Object.keys(TABELA_VALORES);
+
+function fmtBRL(v){
+  return "R$ "+(Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function slug(s){ return s.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+
+// ==============================
+// 2) FUNÇÃO CENTRALIZADA: calcular valor de 1 item
+// ==============================
+function calcularValorItem(nome, qtd = 1, faixaIdx = 0){
+  const cfg = TABELA_VALORES[nome];
+  if(!cfg) return 0;
+  const faixa = cfg.faixas[faixaIdx] || cfg.faixas[0];
+  const precoUnit = faixa?.preco || 0;
+  if (cfg.tipo === "privativo") return Number(precoUnit.toFixed(2));
+  const q = Math.max(0, Math.floor(qtd || 0));
+  return Number((precoUnit * q).toFixed(2));
+}
+
+// ==============================
+// 3) ESTADO: guarda configurações de cada item selecionado
+// ==============================
+const estado = {
+  // [nomeItem] => { faixaIdx, qtd }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('contactForm');
+  const telefoneInput = document.getElementById('telefone');
+
+  const dropdownButton = document.getElementById('passeiosDropdown');
+  const dropdownMenu = document.getElementById('passeiosMenu');
+  const dropdownIcon = document.getElementById('dropdownIcon');
+  const selectedText = document.getElementById('passeiosSelected');
+  const selectedTags = document.getElementById('selectedTags');
+  const painelValores = document.getElementById('painelValores');
+  const itensSelecionadosEl = document.getElementById('itensSelecionados');
+  const resumoTotalEl = document.getElementById('resumoTotal');
+  const resumoQtdEl = document.getElementById('resumoQtd');
+  const checkboxes = dropdownMenu.querySelectorAll('input[type="checkbox"]');
+
+  function buildWhatsAppUrl(phoneDigits, text) {
+    const normalized = String(text).replace(/\r\n/g, '\n');
+    const textoCodificado = encodeURIComponent(normalized);
+    const numero = String(phoneDigits).replace(/\D/g, '');
+    const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+    if (isMobile) return `https://wa.me/${numero}?text=${textoCodificado}`;
+    return `https://api.whatsapp.com/send?phone=${numero}&text=${textoCodificado}`;
+  }
+
+  // --- Dropdown controle ---
+  dropdownButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    const isOpen = !dropdownMenu.classList.contains('hidden');
+    if (isOpen) { dropdownMenu.classList.add('hidden'); dropdownIcon.style.transform = 'rotate(0deg)'; }
+    else { dropdownMenu.classList.remove('hidden'); dropdownIcon.style.transform = 'rotate(180deg)'; }
+  });
+  document.addEventListener('click', function(e) {
+    if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.add('hidden');
+      dropdownIcon.style.transform = 'rotate(0deg)';
+    }
+  });
+
+  // ==============================
+  // 4) RENDER painel de valores por item
+  // ==============================
+  function renderPainelItens(){
+    const selecionados = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+
+    // Mostra/esconde painel inteiro
+    if (selecionados.length === 0) {
+      painelValores.classList.add('hidden');
+    } else {
+      painelValores.classList.remove('hidden');
+    }
+    resumoQtdEl.textContent = selecionados.length;
+
+    // Inicializa estado default para itens recém selecionados
+    selecionados.forEach(nome => {
+      if (!estado[nome]) estado[nome] = { faixaIdx: 0, qtd: 1 };
+    });
+
+    // Limpa estados de itens removidos
+    Object.keys(estado).forEach(nome => {
+      if (!selecionados.includes(nome)) delete estado[nome];
+    });
+
+    // Renderiza um bloco por item
+    itensSelecionadosEl.innerHTML = '';
+    selecionados.forEach(nome => {
+      const cfg = TABELA_VALORES[nome];
+      if (!cfg) return;
+      const st = estado[nome];
+      const bloco = document.createElement('div');
+      bloco.className = 'rounded-xl border border-gray-200 dark:border-gray-600 p-3 lg:p-4 bg-white dark:bg-gray-700/40 space-y-3';
+      const idBase = 'it-' + slug(nome);
+
+      // Faixa de preço (select sempre existe)
+      const faixaOptions = cfg.faixas.map((f,i) =>
+        `<option value="${i}" ${i===st.faixaIdx?'selected':''}>${f.rotulo} • ${fmtBRL(f.preco)}${cfg.tipo==='privativo'?' / '+cfg.unidade:' / pessoa'}</option>`
+      ).join('');
+
+      // Qtd: só para ingressos (por pessoa). Para privativos, é 1 veículo/pacote.
+      const qtdBlock = cfg.tipo === 'ingresso' ? `
+        <div>
+          <label for="${idBase}-qtd" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">
+            Quantidade de pessoas
+          </label>
+          <input type="number" min="1" max="99" step="1" value="${st.qtd}"
+            data-nome="${nome}" data-tipo="qtd"
+            id="${idBase}-qtd"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-500 rounded-lg dark:bg-gray-700 dark:text-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+        </div>` : `
+        <input type="hidden" data-nome="${nome}" data-tipo="qtd" value="1">`;
+
+      const subtotal = calcularValorItem(nome, st.qtd, st.faixaIdx);
+
+      bloco.innerHTML = `
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1">
+            <p class="font-bold text-sm lg:text-base text-gray-900 dark:text-white">${nome}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <span class="inline-block px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 mr-1.5">
+                ${cfg.tipo === 'privativo' ? 'Privativo' : 'Ingresso'}
+              </span>
+              ${cfg.unidade}
+            </p>
+          </div>
+          <button type="button" data-nome="${nome}" data-remove
+            class="shrink-0 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            aria-label="Remover">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label for="${idBase}-fx" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">
+              ${cfg.tipo === 'privativo' ? 'Faixa de passageiros' : 'Tipo de ingresso / faixa'}
+            </label>
+            <select id="${idBase}-fx" data-nome="${nome}" data-tipo="faixa"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-500 rounded-lg dark:bg-gray-700 dark:text-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+              ${faixaOptions}
+            </select>
+          </div>
+          ${qtdBlock}
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-dashed border-gray-200 dark:border-gray-600">
+          <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 font-semibold">Subtotal</span>
+          <span data-nome="${nome}" data-subtotal class="text-lg font-extrabold text-primary-700 dark:text-primary-300">${fmtBRL(subtotal)}</span>
+        </div>
+      `;
+
+      itensSelecionadosEl.appendChild(bloco);
+    });
+
+    // ========= Atualiza total =========
+    recalcularTotal();
+
+    // ========= Liga listeners no painel =========
+    itensSelecionadosEl.querySelectorAll('[data-tipo]').forEach(inp => {
+      inp.addEventListener('change', onInputItemChange);
+      if (inp.tagName === 'INPUT') inp.addEventListener('input', onInputItemChange);
+    });
+    itensSelecionadosEl.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const nome = this.getAttribute('data-nome');
+        const cb = Array.from(checkboxes).find(c => c.value === nome);
+        if (cb) { cb.checked = false; updateSelections(); }
+      });
+    });
+  }
+
+  function onInputItemChange(e){
+    const nome = e.currentTarget.getAttribute('data-nome');
+    const tipo = e.currentTarget.getAttribute('data-tipo');
+    if (!estado[nome]) estado[nome] = { faixaIdx: 0, qtd: 1 };
+    if (tipo === 'faixa') estado[nome].faixaIdx = Number(e.currentTarget.value) || 0;
+    if (tipo === 'qtd') {
+      const v = parseInt(e.currentTarget.value, 10);
+      estado[nome].qtd = isNaN(v) ? 1 : Math.max(1, v);
+    }
+    recalcularTotal();
+  }
+
+  function recalcularTotal(){
+    let total = 0;
+    itensSelecionadosEl.querySelectorAll('[data-subtotal]').forEach(subEl => {
+      const nome = subEl.getAttribute('data-nome');
+      const st = estado[nome] || { faixaIdx:0, qtd:1 };
+      const valor = calcularValorItem(nome, st.qtd, st.faixaIdx);
+      subEl.textContent = fmtBRL(valor);
+      total += valor;
+    });
+    resumoTotalEl.textContent = fmtBRL(total);
+  }
+
+  // ==============================
+  // 5) Atualizar seleções (dropdown + tags + painel)
+  // ==============================
+  function updateSelections() {
+    const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+
+    if (selected.length === 0) {
+      selectedText.textContent = 'Selecione os passeios/ingressos...';
+      selectedText.className = 'text-gray-500 dark:text-gray-400';
+    } else if (selected.length === 1) {
+      selectedText.textContent = selected[0];
+      selectedText.className = 'text-gray-900 dark:text-white';
+    } else {
+      selectedText.textContent = `${selected.length} itens selecionados`;
+      selectedText.className = 'text-gray-900 dark:text-white';
+    }
+
+    // Tags
+    selectedTags.innerHTML = '';
+    selected.forEach(passeio => {
+      const tag = document.createElement('span');
+      tag.className = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      const escaped = passeio.replace(/"/g, '&quot;');
+      tag.innerHTML = `
+        ${escaped}
+        <button type="button" class="ml-1.5 text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-100" aria-label="Remover ${escaped}" data-remove-tag>
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      `;
+      selectedTags.appendChild(tag);
+    });
+    selectedTags.querySelectorAll('[data-remove-tag]').forEach((btn, i) => {
+      btn.addEventListener('click', function(){
+        const nome = selected[i];
+        const cb = Array.from(checkboxes).find(c => c.value === nome);
+        if (cb) { cb.checked = false; updateSelections(); }
+      });
+    });
+
+    // Renderiza painel de valores (com 0.5ms para não travar clique no checkbox)
+    requestAnimationFrame(() => renderPainelItens());
+  }
+
+  // Expor remover (compatibilidade com a tag inline onclick anterior, agora removida)
+  window.removeSelection = function(nome) {
+    const cb = Array.from(checkboxes).find(cb => cb.value === nome);
+    if (cb) { cb.checked = false; updateSelections(); }
+  };
+
+  checkboxes.forEach(cb => cb.addEventListener('change', updateSelections));
+
+  // Máscara telefone
+  telefoneInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length <= 11) {
+      if (value.length <= 2) value = value.replace(/(\d{0,2})/, '($1');
+      else if (value.length <= 7) value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+      else value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+    }
+    e.target.value = value;
+  });
+
+  // ==============================
+  // 6) SUBMIT: montar WhatsApp com total calculado
+  // ==============================
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const nome = String(formData.get('nome') || '').trim();
+    const dia = String(formData.get('dia') || '').padStart(2, '0');
+    const mes = String(formData.get('mes') || '');
+    const ano = String(formData.get('ano') || '');
+    const telefone = String(formData.get('telefone') || '').trim();
+    const mensagem = String(formData.get('mensagem') || 'Nenhuma mensagem adicional').trim();
+
+    const selecionados = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+
+    if (!nome || !dia || !mes || !ano || !telefone) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+    if (selecionados.length === 0) {
+      alert('Por favor, selecione pelo menos um passeio ou ingresso.');
+      return;
+    }
+
+    // Recalcula TUDO novamente no submit (garantia: NÃO depende só do que aparece na tela)
+    let totalGeral = 0;
+    const linhas = [];
+    const detalhes = [];
+
+    selecionados.forEach((nomeItem, idx) => {
+      const cfg = TABELA_VALORES[nomeItem];
+      if (!cfg) return;
+      const st = estado[nomeItem] || { faixaIdx:0, qtd:1 };
+      const faixa = cfg.faixas[st.faixaIdx] || cfg.faixas[0];
+      const qtd = cfg.tipo === 'privativo' ? 1 : Math.max(1, Math.floor(st.qtd||1));
+      const valorItem = calcularValorItem(nomeItem, qtd, st.faixaIdx);
+      totalGeral += valorItem;
+
+      linhas.push(`${idx+1}. ${nomeItem}`);
+
+      let linhaDet = `   • ${faixa.rotulo} • ${fmtBRL(faixa.preco)}`;
+      if (cfg.tipo === 'ingresso') linhaDet += ` × ${qtd} ${qtd===1?'pessoa':'pessoas'}`;
+      else linhaDet += ` • ${cfg.unidade}`;
+      linhaDet += `  →  Subtotal: ${fmtBRL(valorItem)}`;
+      detalhes.push(linhaDet);
+    });
+
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+    totalGeral = Number(totalGeral.toFixed(2));
+
+    const msg =
+`🌟 *Solicitação de Passeios / Ingressos* 🌟
+
+👤 *Nome:* ${nome}
+📅 *Data Desejada:* ${dataFormatada}
+
+🎯 *Itens selecionados (${selecionados.length}):*
+${linhas.join('\n')}
+
+🧾 *Detalhamento dos valores:*
+${detalhes.join('\n')}
+
+💰 *VALOR TOTAL ESTIMADO:* ${fmtBRL(totalGeral)}
+*Observação:* valores sujeitos à confirmação de disponibilidade.
+
+📱 *Telefone/WhatsApp:* ${telefone}
+💬 *Mensagem adicional:* ${mensagem}
+
+📍 *Enviado através do site* — Passeios Gramado Canela
+⏰ *${new Date().toLocaleString('pt-BR')}*`;
+
+    const numeroWhatsApp = '5554992065626';
+    const urlWhatsApp = buildWhatsAppUrl(numeroWhatsApp, msg);
+
+    try {
+      window.open(urlWhatsApp, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Falha ao abrir WhatsApp:', err);
+      alert('Não foi possível abrir o WhatsApp. Tente novamente.');
+      return;
+    }
+
+    // Limpar form
+    form.reset();
+    Object.keys(estado).forEach(k => delete estado[k]);
+    updateSelections();
+
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button.innerHTML;
+    button.innerHTML = `
+      <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Redirecionando...
+    `;
+    setTimeout(() => (button.innerHTML = originalText), 2000);
+  });
+
+  // Primeiro update (garante que dropdown inicial mostre "Selecione...")
+  updateSelections();
+});
+</script>
