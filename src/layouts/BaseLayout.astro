@@ -13,14 +13,14 @@ export interface Props {
 const {
   title,
   description,
-  image = '/images/logo_sander_p.png',
+  image = '/images/logo_Stander_p.png',
   canonical,
   noindex = false,
-  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Sander Turismo'],
+  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Stander Turismo'],
 } = Astro.props;
 
 // Criar URLs de forma segura
-const baseUrl = Astro.site?.toString() || 'https://sanderturismo.vercel.app/';
+const baseUrl = Astro.site?.toString() || 'https://Standerturismo.vercel.app/';
 const canonicalURL = canonical || new URL(Astro.url.pathname, baseUrl).toString();
 const socialImage = new URL(image, baseUrl).toString();
 
@@ -52,7 +52,7 @@ const ogHeight =
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
-    <meta name="author" content="Sander Turismo" />
+    <meta name="author" content="Stander Turismo" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
     <link rel="canonical" href={canonicalURL} />
     
@@ -61,7 +61,7 @@ const ogHeight =
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Sander Turismo" />
+    <meta property="og:site_name" content="Stander Turismo" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -76,8 +76,8 @@ const ogHeight =
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@sanderturismo" />
-    <meta name="twitter:creator" content="@sanderturismo" />
+    <meta name="twitter:site" content="@Standerturismo" />
+    <meta name="twitter:creator" content="@Standerturismo" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -92,7 +92,7 @@ const ogHeight =
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "TravelAgency",
-      "name": "Sander Turismo",
+      "name": "Stander Turismo",
       "alternateName": "Guia Turismo Serra Gaúcha",
       "description": description,
       "url": canonicalURL,
@@ -127,8 +127,8 @@ const ogHeight =
       ],
       "priceRange": "R$",
       "sameAs": [
-        "https://www.instagram.com/sanderturismo//",
-        "https://www.facebook.com/sanderturismo"
+        "https://www.instagram.com/Standerturismo//",
+        "https://www.facebook.com/Standerturismo"
       ]
     })} />
 

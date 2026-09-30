@@ -1,4 +1,4 @@
-// Sander Turismo: navy #001D43 and gold #BE9544 sampled from logo_sander_p.png.
+// Stander Turismo: navy #001D43 and gold #BE9544 sampled from logo_Stander_p.png.
 // Lighter and darker shades support surfaces, readable text and interactive states.
 export default {
   "primary": {
