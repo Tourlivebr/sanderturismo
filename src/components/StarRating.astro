@@ -37,7 +37,7 @@ const stars = Array.from({ length: maxRating }, (_, i) => {
 <div class={`flex items-center gap-1 ${className}`} role="img" aria-label={`${rating} de ${maxRating} estrelas`}>
   {stars.map((star) => (
     <svg 
-      class={`${sizeClasses[size]} ${star.filled ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
+      class={`${sizeClasses[size]} ${star.filled ? 'text-accent-400' : 'text-dark-300 dark:text-dark-600'}`}
       fill="currentColor" 
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -45,8 +45,8 @@ const stars = Array.from({ length: maxRating }, (_, i) => {
       {star.halfFilled ? (
         <defs>
           <linearGradient id={`half-${star.number}`}>
-            <stop offset="50%" stop-color="currentColor" class="text-yellow-400" />
-            <stop offset="50%" stop-color="currentColor" class="text-gray-300 dark:text-gray-600" />
+            <stop offset="50%" stop-color="currentColor" class="text-accent-400" />
+            <stop offset="50%" stop-color="currentColor" class="text-dark-300 dark:text-dark-600" />
           </linearGradient>
         </defs>
       ) : null}
@@ -58,7 +58,7 @@ const stars = Array.from({ length: maxRating }, (_, i) => {
   ))}
   
   {showNumber && (
-    <span class="ml-1 text-sm text-gray-600 dark:text-gray-400 font-medium">
+    <span class="ml-1 text-sm text-dark-600 dark:text-dark-400 font-medium">
       {rating}
     </span>
   )}

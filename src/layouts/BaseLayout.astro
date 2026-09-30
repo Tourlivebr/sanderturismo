@@ -13,14 +13,14 @@ export interface Props {
 const {
   title,
   description,
-  image = '/images/logo_p_pgc_t.png',
+  image = '/images/logo_sander_p.png',
   canonical,
   noindex = false,
-  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Passeios Gramado Canela'],
+  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Sander Turismo'],
 } = Astro.props;
 
 // Criar URLs de forma segura
-const baseUrl = Astro.site?.toString() || 'https://passeiogramadocanela.vercel.app/';
+const baseUrl = Astro.site?.toString() || 'https://sanderturismo.vercel.app/';
 const canonicalURL = canonical || new URL(Astro.url.pathname, baseUrl).toString();
 const socialImage = new URL(image, baseUrl).toString();
 
@@ -45,13 +45,14 @@ const ogHeight =
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#001D43" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- SEO Meta Tags -->
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
-    <meta name="author" content="Passeios Gramado Canela" />
+    <meta name="author" content="Sander Turismo" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
     <link rel="canonical" href={canonicalURL} />
     
@@ -60,7 +61,7 @@ const ogHeight =
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Passeios Gramado Canela" />
+    <meta property="og:site_name" content="Sander Turismo" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -75,8 +76,8 @@ const ogHeight =
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@passeiogramadocanela" />
-    <meta name="twitter:creator" content="@passeiogramadocanela" />
+    <meta name="twitter:site" content="@sanderturismo" />
+    <meta name="twitter:creator" content="@sanderturismo" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -91,12 +92,12 @@ const ogHeight =
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "TravelAgency",
-      "name": "Passeios Gramado Canela",
+      "name": "Sander Turismo",
       "alternateName": "Guia Turismo Serra Gaúcha",
       "description": description,
       "url": canonicalURL,
       "image": socialImage,
-      "telephone": "+5554992065626",
+      "telephone": "+5547984887630",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Gramado",
@@ -126,50 +127,13 @@ const ogHeight =
       ],
       "priceRange": "R$",
       "sameAs": [
-        "https://www.instagram.com/passeiogramadocanela//",
-        "https://www.facebook.com/passeiogramadocanela"
+        "https://www.instagram.com/sanderturismo//",
+        "https://www.facebook.com/sanderturismo"
       ]
     })} />
 
     
     <style>
-      :root {
-        /* Paleta Passeios Gramado Canela — extraída fielmente da logo oficial
-           Primary: VERDE FLORESTA (montanhas + "Gramado" + anel externo — cor de identidade Serra Gaúcha)
-           Accent:  DOURADO BRONZE (sol + "Tchê" + anel interno + caminho — tom de luxo/destaque)
-           Cream:   CREME OFF-WHITE (fundo circular da logo — base aconchegante)
-           Dark:    Neutros quentes alinhados com o creme e o verde profundo */
-        --clr-primary-50:  #F3F7F3;
-        --clr-primary-100: #DFE8E0;
-        --clr-primary-200: #BDCFBF;
-        --clr-primary-300: #8FB292;
-        --clr-primary-400: #5C8A63;
-        --clr-primary-500: #3A6841;
-        --clr-primary-600: #2A5031;
-        --clr-primary-700: #203E26;
-        --clr-primary:      #2A5031;  /* verde floresta (montanhas + "Gramado") */
-
-        --clr-accent-50:  #FBF4E3;
-        --clr-accent-100: #F4E3B9;
-        --clr-accent-200: #EACA7E;
-        --clr-accent-300: #DFA953;
-        --clr-accent-400: #CE8A37;
-        --clr-accent-500: #B57323;
-        --clr-accent-600: #9D601C;
-        --clr-accent:      #B57323;  /* dourado bronze ("Tchê" + anel interno) */
-
-        --clr-cream-50:   #FDF8EC;
-
-        --clr-dark-50:  #FAF6ED;
-        --clr-dark-100: #EEE7D5;
-        --clr-dark-300: #BBAD88;
-        --clr-dark-500: #5E5336;
-        --clr-dark-700: #282415;
-        --clr-dark-800: #1A180E;
-        --clr-dark:      #1A180E;
-
-        --clr-whatsapp: #25D366;
-      }
       html {
         scroll-behavior: smooth;
       }

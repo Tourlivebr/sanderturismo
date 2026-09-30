@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SRC_LOGO = path.resolve(__dirname, 'public', 'images', 'logo_p_pgc_t.png');
+const SRC_LOGO = path.resolve(__dirname, 'public', 'images', 'logo_sander_p.png');
 const OUT = path.resolve(__dirname, 'public', 'images', 'og-default-1200x630.jpg');
 
 const LOGO_TAM = 520;
@@ -41,7 +41,7 @@ const H = 630;
     <circle cx="${W / 2}" cy="${H / 2 - 44}" r="${(LOGO_TAM + 130) / 2 + 3}" fill="#1A1A1A" opacity="0.55"/>
     <circle cx="${W / 2}" cy="${H / 2 - 44}" r="${(LOGO_TAM + 130) / 2}" fill="url(#gold)"/>
     <text x="${W / 2}" y="552" text-anchor="middle" font-family="Arial Black, Impact, Arial, sans-serif" font-size="66" font-weight="900" fill="url(#gold)" stroke="#1A1A1A" stroke-width="4" paint-order="stroke">
-      Passeios Gramado Canela
+      Sander Turismo
     </text>
     <text x="${W / 2}" y="600" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#FFFFFF" opacity="0.94">
       Gramado &amp; Canela · Serra Gaúcha · RS

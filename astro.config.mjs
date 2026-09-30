@@ -5,5 +5,5 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://passeiogramadocanela.vercel.app',
+  site: 'https://sanderturismo.vercel.app',
 });

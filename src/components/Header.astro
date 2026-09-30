@@ -2,14 +2,14 @@
 // Remover todo o array todosPasseios daqui - agora será definido no JavaScript
 ---
 
-<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 dark:bg-gray-900/50 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/20">
+<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 dark:bg-dark-900/50 backdrop-blur-md border-b border-dark-200/20 dark:border-dark-700/20">
   <div class="container mx-auto px-2 lg:px-4">
     <nav class="header-nav flex items-center justify-between h-20 lg:h-28" aria-label="Navegação principal">
       <!-- Logo -->
       <a href="/" class="flex items-center justify-center h-full ml-2 lg:ml-0 group mobile-landscape-hide header-logo" aria-label="Página inicial">
         <img 
-          src="/images/logo_p_pgc_t.png" 
-          alt="Passeios Gramado Canela" 
+          src="/images/logo_sander_p.png" 
+          alt="Sander Turismo" 
           class="h-full w-auto max-h-[85%] transition-transform group-hover:scale-105 object-contain"
           width="160"
           height="112"
@@ -23,17 +23,17 @@
             type="text" 
             id="search-input"
             placeholder="Buscar passeios ou Ingressos..."
-            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            class="w-full pl-8 pr-4 py-2 border border-dark-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
             autocomplete="off"
           />
           <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="h-5 w-5 text-dark-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
           
           <!-- Search Results Dropdown -->
-          <div id="search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-80 overflow-y-auto hidden z-50">
+          <div id="search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-dark-200 rounded-lg shadow-lg max-h-80 overflow-y-auto hidden z-50">
             <!-- Results will be populated by JavaScript -->
           </div>
         </div>
@@ -46,15 +46,15 @@
             type="text" 
             id="mobile-scrolled-search-input"
             placeholder="Buscar passeios ou Ingressos..."
-            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm text-sm"
+            class="w-full pl-8 pr-4 py-2 border border-dark-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm text-sm"
             autocomplete="off"
           />
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="h-5 w-5 text-dark-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
-          <div id="mobile-scrolled-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
+          <div id="mobile-scrolled-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-dark-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
         <li role="none">
           <a 
             href="#quem-sou" 
-            class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
+            class="text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
             role="menuitem"
           >
             Início
@@ -72,7 +72,7 @@
         </li>
         <li role="none" class="relative group">
           <button 
-            class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 flex items-center"
+            class="text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 flex items-center"
             role="menuitem"
             aria-haspopup="true"
             aria-expanded="false"
@@ -83,15 +83,15 @@
             </svg>
           </button>
           <!-- Dropdown Menu -->
-          <div class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-dark-800 rounded-lg shadow-xl border border-dark-200 dark:border-dark-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
             <div class="py-2">
-              <a href="/ingressos" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary-600 transition-colors">
+              <a href="/ingressos" class="block px-4 py-3 text-dark-700 dark:text-dark-300 hover:bg-dark-50 dark:hover:bg-dark-700 hover:text-primary-600 transition-colors">
                 <div class="font-medium">Ingressos e Atrações</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">Gramado e Canela</div>
+                <div class="text-sm text-dark-500 dark:text-dark-400">Gramado e Canela</div>
               </a>
-              <a href="/passeios" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary-600 transition-colors">
+              <a href="/passeios" class="block px-4 py-3 text-dark-700 dark:text-dark-300 hover:bg-dark-50 dark:hover:bg-dark-700 hover:text-primary-600 transition-colors">
                 <div class="font-medium">Translados e Passeios</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">Tours personalizados</div>
+                <div class="text-sm text-dark-500 dark:text-dark-400">Tours personalizados</div>
               </a>
             </div>
           </div>
@@ -99,7 +99,7 @@
         <li role="none">
           <a 
             href="#depoimentos" 
-            class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
+            class="text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
             role="menuitem"
           >
             Depoimentos
@@ -108,7 +108,7 @@
         <li role="none">
           <a 
             href="#contato" 
-            class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
+            class="text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
             role="menuitem"
           >
             Contato
@@ -122,16 +122,16 @@
             type="text" 
             id="mobile-landscape-search-input"
             placeholder="Buscar passeios ou Ingressos..."
-            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            class="w-full pl-8 pr-4 py-2 border border-dark-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
             autocomplete="off"
           />
           <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="h-5 w-5 text-dark-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
           
-          <div id="mobile-landscape-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
+          <div id="mobile-landscape-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-dark-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@
       <!-- Mobile Search Button -->
       <button 
         id="mobile-search-button"
-        class="md:hidden lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-auto mobile-landscape-hide header-mobile-search-btn"
+        class="md:hidden lg:hidden p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors ml-auto mobile-landscape-hide header-mobile-search-btn"
         aria-label="Abrir busca"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@
       <!-- Mobile Menu Button -->
       <button 
         id="mobile-menu-button"
-        class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors mobile-landscape-menu"
+        class="md:hidden p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors mobile-landscape-menu"
         aria-label="Abrir menu de navegação"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -168,49 +168,49 @@
           type="text" 
           id="mobile-search-input"
           placeholder="Buscar passeios ou Ingressos..."
-          class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          class="w-full pl-8 pr-4 py-2 border border-dark-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
           autocomplete="off"
         />
         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-          <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="h-5 w-5 text-dark-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </div>
         
         <!-- Mobile Search Results -->
-        <div id="mobile-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
+        <div id="mobile-search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-dark-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
           <!-- Results will be populated by JavaScript -->
         </div>
       </div>
     </div>
     
     <!-- Mobile Menu (estrutura e estilo IDENTICOS ao desktop) -->
-    <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700/60 shadow-xl z-[60] absolute w-full left-0 right-0 top-full">
+    <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-dark-900 border-t border-dark-200 dark:border-dark-700/60 shadow-xl z-[60] absolute w-full left-0 right-0 top-full">
       <div class="container mx-auto px-6 py-6 space-y-5 text-left">
-        <a href="#quem-sou" class="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-gray-100 dark:border-gray-700/50 last:border-b-0">Início</a>
+        <a href="#quem-sou" class="block text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-dark-100 dark:border-dark-700/50 last:border-b-0">Início</a>
         
         <!-- Mobile Services Dropdown (IGUAL desktop dropdown: 2 niveis, titulo + subtitulo, hover primary) -->
-        <div class="pb-1 border-b border-gray-100 dark:border-gray-700/50 last:border-b-0">
-          <button id="mobile-services-toggle" class="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg py-2">
+        <div class="pb-1 border-b border-dark-100 dark:border-dark-700/50 last:border-b-0">
+          <button id="mobile-services-toggle" class="flex items-center justify-between w-full text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg py-2">
             Serviços
-            <svg class="w-5 h-5 transition-transform text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 transition-transform text-dark-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
-          <div id="mobile-services-menu" class="hidden pl-2 sm:pl-4 mt-2 mb-3 space-y-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 py-3 px-3 border border-gray-200/70 dark:border-gray-700/50 shadow-inner">
-            <a href="/ingressos" class="block px-3 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700/60 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 mobile-menu-link border border-transparent hover:border-primary-100 dark:hover:border-primary-900/40">
+          <div id="mobile-services-menu" class="hidden pl-2 sm:pl-4 mt-2 mb-3 space-y-3 rounded-xl bg-dark-50 dark:bg-dark-800/60 py-3 px-3 border border-dark-200/70 dark:border-dark-700/50 shadow-inner">
+            <a href="/ingressos" class="block px-3 py-3 rounded-lg text-dark-700 dark:text-dark-300 hover:bg-white dark:hover:bg-dark-700/60 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 mobile-menu-link border border-transparent hover:border-primary-100 dark:hover:border-primary-900/40">
               <div class="font-semibold text-base">Ingressos e Atrações</div>
-              <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gramado e Canela</div>
+              <div class="text-sm text-dark-500 dark:text-dark-400 mt-1">Gramado e Canela</div>
             </a>
-            <a href="/passeios" class="block px-3 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700/60 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 mobile-menu-link border border-transparent hover:border-primary-100 dark:hover:border-primary-900/40">
+            <a href="/passeios" class="block px-3 py-3 rounded-lg text-dark-700 dark:text-dark-300 hover:bg-white dark:hover:bg-dark-700/60 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 mobile-menu-link border border-transparent hover:border-primary-100 dark:hover:border-primary-900/40">
               <div class="font-semibold text-base">Translados e Passeios</div>
-              <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Tours personalizados</div>
+              <div class="text-sm text-dark-500 dark:text-dark-400 mt-1">Tours personalizados</div>
             </a>
           </div>
         </div>
         
-        <a href="#depoimentos" class="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-gray-100 dark:border-gray-700/50">Depoimentos</a>
-        <a href="#contato" class="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-gray-100 dark:border-gray-700/50">Contato</a>
+        <a href="#depoimentos" class="block text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-dark-100 dark:border-dark-700/50">Depoimentos</a>
+        <a href="#contato" class="block text-dark-700 dark:text-dark-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-semibold text-lg mobile-menu-link py-2 border-b border-dark-100 dark:border-dark-700/50">Contato</a>
       </div>
     </div>
   </div>
@@ -367,7 +367,7 @@
     
     if (filteredPasseios.length === 0) {
       resultsContainer.innerHTML = `
-        <div class="p-4 text-gray-500 text-center">
+        <div class="p-4 text-dark-500 text-center">
           Nenhum passeio encontrado para "${query}"
         </div>
       `;
@@ -375,10 +375,10 @@
       resultsContainer.innerHTML = filteredPasseios.map(passeio => {
         const href = `/${passeio.slug}`;
         return `
-          <a href="${href}" class="block p-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0">
-            <div class="font-medium text-gray-800">${passeio.titulo}</div>
-            <div class="text-sm text-gray-600">${passeio.subtitulo || ''}</div>
-            <div class="text-xs text-blue-600 mt-1">${passeio.categoria}</div>
+          <a href="${href}" class="block p-3 hover:bg-dark-50 transition-colors border-b border-dark-100 last:border-b-0">
+            <div class="font-medium text-dark-800">${passeio.titulo}</div>
+            <div class="text-sm text-dark-600">${passeio.subtitulo || ''}</div>
+            <div class="text-xs text-primary-600 mt-1">${passeio.categoria}</div>
           </a>
         `;
       }).join('');
